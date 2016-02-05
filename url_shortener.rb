@@ -19,6 +19,9 @@ def valid?(url)
   url =~ /\A#{URI.regexp(%w(http https))}\z/
 end
 
+# change from default port to avoid collisions with other sinatra projects
+set :port, 4073
+
 get '/' do
   send_file File.join(settings.public_folder, 'index.html')
 end
