@@ -1,3 +1,6 @@
+# URL Shortener Specific
+urls.db
+
 *.gem
 *.rbc
 /.config
