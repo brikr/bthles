@@ -32,8 +32,6 @@ end
 post '/' do
   request.body.rewind
 
-  puts "ASDL;KFJASDKL;F: #{request.url}"
-
   # strip request body
   url = params['url']
 
@@ -53,5 +51,5 @@ post '/' do
   File.open('urls.db', 'w') { |f| f.write(Marshal.dump($urls)) }
 
   # nice output
-  "Your shortened url is <a href=#{shortened}>#{request.url}#{shortened}</a>"
+  "Your shortened url is <a href=#{shortened}>bthl.es/#{shortened}</a>"
 end
