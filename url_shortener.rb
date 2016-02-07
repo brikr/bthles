@@ -3,18 +3,21 @@
 require 'sinatra'
 require 'net/http'
 require 'base62'
+require 'sqlite3'
 
-# setup $urls list
-# use sqlite here or something
-# this is probably really slow
-$urls =
-  if File.exist?('urls.db')
-    Marshal.load(File.read('urls.db'))
-  else
-    []
-  end
+# open urls database
+def open_database
+  urls = SQLite3::Database.new 'urls.db'
+  urls.execute 'CREATE TABLE IF NOT EXISTS
+    URLS(Short TEXT PRIMARY KEY, Long TEXT)'
+  urls
+rescue SQLite3::Exception => e
+  puts 'Exception occured when trying to open database'
+  puts e
+  urls.close if urls
+end
 
-# shoutouts to stackoverflow
+# validate url via regexp
 def valid?(url)
   url =~ /\A#{URI.regexp(%w(http https))}\z/
 end
@@ -29,30 +32,69 @@ end
 get '/:shortened' do
   # redirect to shortened url
   # luckily this will just redirect to / if shortened is invalid
-  redirect $urls[params['shortened'].base62_decode]
+
+  # ready the database
+  urls = open_database
+
+  # find the url
+  begin
+    url = urls.get_first_value 'SELECT Long FROM URLS
+                                WHERE Short = :shortened',
+                               params['shortened']
+  rescue SQLite3::Exception => e
+    puts e
+    'Database error! <a href="/">Go back.</a>'
+  ensure
+    urls.close
+  end
+
+  # redirect
+  # if this is nil, it will just take us home
+  redirect url
 end
 
 post '/' do
-  request.body.rewind
-
-  # strip request body
+  # get url from post
   url = params['url']
 
+  # cleanup if necessary
+  url.prepend('http://') unless url.start_with?('http://', 'https://')
+
   # verify
-  return "Invalid URL. <a href='/'>Go back.</a>" unless valid?(url)
+  return 'Invalid URL. <a href="/">Go back.</a>' unless valid?(url)
 
-  # check if we've already stored it
-  if $urls.include? url
-    shortened = $urls.index(url).base62_encode
-  else
-    # if we haven't, add it to the list
-    $urls << url
-    shortened = ($urls.length - 1).base62_encode
+  begin
+    # ready the database
+    urls = open_database
+
+    # check if we've already stored it
+    shortened = urls.get_first_value 'SELECT Short FROM URLS
+                                      WHERE Long = :url',
+                                     url
+
+    # return shortened url if we found it in the database
+    unless shortened.nil?
+      return 'Your shortened url is '\
+             "<a href=#{shortened}>bthl.es/#{shortened}</a>"
+    end
+
+    # set shortened to the next id otherwise
+    output = urls.get_first_value 'SELECT Short FROM URLS
+                                   ORDER BY Short DESC
+                                   LIMIT 1'
+    shortened = (output.base62_decode + 1).base62_encode unless output.nil?
+    # special case for first url inserted
+    shortened ||= '0'
+
+    # insert the new url into the database
+    urls.execute 'INSERT INTO URLS VALUES(:shortened, :url)', shortened, url
+
+    # nice output
+    "Your shortened url is <a href=#{shortened}>bthl.es/#{shortened}</a>"
+  rescue SQLite3::Exception => e
+    puts e
+    'Database error! <a href="/">Go back.</a>'
+  ensure
+    urls.close
   end
-
-  # reserialize
-  File.open('urls.db', 'w') { |f| f.write(Marshal.dump($urls)) }
-
-  # nice output
-  "Your shortened url is <a href=#{shortened}>bthl.es/#{shortened}</a>"
 end
