@@ -19,7 +19,7 @@ end
 
 # validate url via regexp
 def valid?(url)
-  url =~ /\A#{URI.regexp(%w(http https))}\z/
+  url =~ /\A#{URI.regexp(%w(http https))}\z/ and not url.empty?
 end
 
 # change from default port to avoid collisions with other sinatra projects
