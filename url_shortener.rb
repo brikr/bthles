@@ -2,6 +2,7 @@
 
 require 'sinatra'
 require 'sinatra/json'
+require 'sinatra/reloader'
 require 'net/http'
 require 'base62'
 require 'sqlite3'
