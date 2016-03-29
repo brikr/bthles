@@ -6,7 +6,7 @@ var shorten = function() {
     }, function(data, status, xhr) {
         console.log(data);
         if (!data.error) {
-            $('#result').html('<a href="' + data.url + '">' + data.url + '</a>');
+            $('#result').html('<a href="http://' + data.url + '">' + data.url + '</a>');
         } else {
             $('#result').html('<a href="/">' + data.message + '</a>');
         }
