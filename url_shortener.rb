@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 
 require 'sinatra'
+require 'sinatra/json'
 require 'net/http'
 require 'base62'
 require 'sqlite3'
@@ -9,7 +10,7 @@ require 'sqlite3'
 def open_database
   urls = SQLite3::Database.new 'urls.db'
   urls.execute 'CREATE TABLE IF NOT EXISTS
-    URLS(Short TEXT PRIMARY KEY, Long TEXT)'
+    Urls(Short TEXT PRIMARY KEY, Long TEXT, Type TEXT)'
   urls
 rescue SQLite3::Exception => e
   puts 'Exception occured when trying to open database'
@@ -19,7 +20,7 @@ end
 
 # validate url via regexp
 def valid?(url)
-  url =~ /\A#{URI.regexp(%w(http https))}\z/ and not url.empty?
+  url =~ /\A#{URI.regexp(%w(http https))}\z/ && !url.empty?
 end
 
 # change from default port to avoid collisions with other sinatra projects
@@ -43,7 +44,7 @@ get '/:shortened' do
                                params['shortened']
   rescue SQLite3::Exception => e
     puts e
-    'Database error! <a href="/">Go back.</a>'
+    '<a href="/">Database error</a>'
   ensure
     urls.close
   end
@@ -74,8 +75,10 @@ post '/' do
 
     # return shortened url if we found it in the database
     unless shortened.nil?
-      return 'Your shortened url is '\
-             "<a href=#{shortened}>bthl.es/#{shortened}</a>"
+      return json(
+        error: false,
+        url: "bthl.es/#{shortened}"
+      )
     end
 
     # set shortened to the next id otherwise
@@ -87,13 +90,20 @@ post '/' do
     shortened ||= '0'
 
     # insert the new url into the database
-    urls.execute 'INSERT INTO URLS VALUES(:shortened, :url)', shortened, url
+    urls.execute 'INSERT INTO URLS VALUES(:shortened, :url, "url")', shortened,
+                 url
 
     # nice output
-    "Your shortened url is <a href=#{shortened}>bthl.es/#{shortened}</a>"
+    json(
+      error: false,
+      url: "bthl.es/#{shortened}"
+    )
   rescue SQLite3::Exception => e
     puts e
-    'Database error! <a href="/">Go back.</a>'
+    json(
+      error: true,
+      message: 'Database error'
+    )
   ensure
     urls.close
   end
