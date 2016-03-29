@@ -63,7 +63,7 @@ post '/' do
   url.prepend('http://') unless url.start_with?('http://', 'https://')
 
   # verify
-  return 'Invalid URL. <a href="/">Go back.</a>' unless valid?(url)
+  return json(error: true, message: 'Invalid URL') unless valid?(url)
 
   begin
     # ready the database
