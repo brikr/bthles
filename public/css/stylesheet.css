@@ -17,11 +17,12 @@ body {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
+    align-content: center;
     justify-content: center;
 }
 
 #result {
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: Helvetica, Arial, sans-serif;
     font-size: 2em;
 }
 
@@ -47,9 +48,10 @@ body {
     background-color: #694512;
     color: #EBBA74;
     outline: none;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: Helvetica, Arial, sans-serif;
     font-size: 10pt;
     cursor: pointer;
+    align-self: flex-start;
 }
 
 .url-textbox {
