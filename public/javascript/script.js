@@ -1,10 +1,8 @@
-var mode = 'shorten';
-
 function activate() {
-    if (mode == 'shorten') {
-        shorten();
-    } else {
+    if (/^(http:\/\/)?bthl.es\/.+/i.test($('.url-textbox').val())) {
         info();
+    } else {
+        shorten();
     }
 }
 
@@ -41,6 +39,18 @@ function info() {
     });
 }
 
+function updateButton() {
+    if ($('.url-button p').text() == 'shorten' && /^(http:\/\/)?bthl.es\/.+/i.test($('.url-textbox').val())) {
+        $('.url-button p').fadeOut(function() {
+            $('.url-button p').text('stats').fadeIn('slow');
+        });
+    } else if ($('.url-button p').text() == 'stats' && !/^(http:\/\/)?bthl.es\/.+/i.test($('.url-textbox').val())) {
+        $('.url-button p').fadeOut(function() {
+            $('.url-button p').text('shorten').fadeIn('slow');
+        });
+    }
+}
+
 $(document).ready(function() {
     // intro
     $('.center').hide();
@@ -52,6 +62,9 @@ $(document).ready(function() {
         $(this).focus();
     });
 
+    // in case the field already has text
+    updateButton();
+
     // shortening
     $('.url-button').click(activate);
     $('.url-textbox').on('keypress', function(e) {
@@ -62,19 +75,7 @@ $(document).ready(function() {
     });
 
     // stats
-    $(document).on('change paste keyup', '.url-textbox', function() {
-        if ($('.url-button p').text() == 'shorten' && /^(http:\/\/)?bthl.es\/.+/i.test($('.url-textbox').val())) {
-            mode = 'stats';
-            $('.url-button p').fadeOut(function() {
-                $('.url-button p').text('stats').fadeIn('slow');
-            });
-        } else if ($('.url-button p').text() == 'stats' && !/^(http:\/\/)?bthl.es\/.+/i.test($('.url-textbox').val())) {
-            mode = 'shorten';
-            $('.url-button p').fadeOut(function() {
-                $('.url-button p').text('shorten').fadeIn('slow');
-            });
-        }
-    });
+    $(document).on('change paste keyup', '.url-textbox', updateButton);
 
     // copy result to clipboard
     $(document).on('click', '#result p', function() {
