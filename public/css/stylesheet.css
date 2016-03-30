@@ -51,7 +51,6 @@ body {
     font-family: Helvetica, Arial, sans-serif;
     font-size: 10pt;
     cursor: pointer;
-    align-self: flex-start;
 }
 
 .url-textbox {
