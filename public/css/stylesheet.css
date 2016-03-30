@@ -20,14 +20,19 @@ body {
     justify-content: center;
 }
 
-.url-textbox {
-    width: 50%;
-    height: 30px;
-    font-size: 25px;
-    background-color: #FFDBA7;
-    border: none;
-    padding: none;
-    outline: none;
+#result {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 2em;
+}
+
+#result a {
+    color: #FFDBA7;
+    text-decoration: none;
+}
+
+#result p {
+    color: #FFDBA7;
+    cursor: pointer;
 }
 
 .url-button {
@@ -46,17 +51,12 @@ body {
     cursor: pointer;
 }
 
-#result {
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 2em;
-}
-
-#result p {
-    color: #FFDBA7;
-    cursor: pointer;
-}
-
-#result a {
-    color: #FFDBA7;
-    text-decoration: none;
+.url-textbox {
+    width: 50%;
+    height: 30px;
+    font-size: 25px;
+    background-color: #FFDBA7;
+    border: none;
+    padding: none;
+    outline: none;
 }
