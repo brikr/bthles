@@ -3,4 +3,3 @@
 
 ## To Do
 - Support multiple shortening types (e.g. raw text)
-- Perform better URL validation

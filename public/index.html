@@ -2,15 +2,19 @@
 <html>
   <head>
     <title>bthl.es - the future of link shortening</title>
+
+    <link rel='stylesheet' type='text/css' href='css/reset.css'>
     <link rel='stylesheet' type='text/css' href='css/stylesheet.css'>
     <link rel="shortcut icon" href="favicon.ico">
-    <script type='text/javascript' src='http://code.jquery.com/jquery-2.2.2.min.js'></script>
+
+    <script type='text/javascript' src='javascript/jquery-2.2.2.min.js'></script>
+    <script type='text/javascript' src='javascript/clipboard.min.js'></script>
     <script type='text/javascript' src='javascript/script.js'></script>
   </head>
   <body>
     <div class='center' id='url'>
-      <input id='url-textbox' type='url' value=''>
-      <input id='url-button' type='button' value='shorten'>
+      <input class='url-textbox' type='url' value=''>
+      <div class='url-button'>shorten</div>
     </div>
     <div class='center' id='result'></div>
   </body>
