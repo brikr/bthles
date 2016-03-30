@@ -6,7 +6,6 @@ var shorten = function() {
         type: 'url',
         url: $('.url-textbox').val()
     }, function(data, status, xhr) {
-        console.log(data);
         if (!data.error) {
             // $('#result').html('<a href="http://' + data.url + '">' + data.url + '</a>');
             $('#result').html('<p>' + data.url + '</p>');
