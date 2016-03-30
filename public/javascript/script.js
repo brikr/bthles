@@ -1,4 +1,14 @@
-var shorten = function() {
+var mode = 'shorten';
+
+function activate() {
+    if (mode == 'shorten') {
+        shorten();
+    } else {
+        info();
+    }
+}
+
+function shorten() {
     $('.url-textbox').blur();
     url = $('.url-textbox').val();
 
@@ -7,8 +17,22 @@ var shorten = function() {
         url: $('.url-textbox').val()
     }, function(data, status, xhr) {
         if (!data.error) {
-            // $('#result').html('<a href="http://' + data.url + '">' + data.url + '</a>');
             $('#result').html('<p>' + data.url + '</p>');
+        } else {
+            $('#result').html('<a href="/">' + data.message + '</a>');
+        }
+        $('#url').fadeOut();
+        $('#result').fadeIn();
+    });
+}
+
+function info() {
+    $('.url-textbox').blur();
+    url = $('.url-textbox').val().split('/').pop();
+
+    $.get('/_stats/' + url, null, function(data, status, xhr) {
+        if (!data.error) {
+            $('#result').html('<a href="/">long: ' + data.long + '<br />hits: ' + data.hits + '</a>');
         } else {
             $('#result').html('<a href="/">' + data.message + '</a>');
         }
@@ -29,11 +53,26 @@ $(document).ready(function() {
     });
 
     // shortening
-    $('.url-button').click(shorten);
+    $('.url-button').click(activate);
     $('.url-textbox').on('keypress', function(e) {
         if (e.keyCode == 13) {
-            shorten();
+            activate();
             return false;
+        }
+    });
+
+    // stats
+    $(document).on('change paste keyup', '.url-textbox', function() {
+        if ($('.url-button p').text() == 'shorten' && /^(http:\/\/)?bthl.es\/.+/i.test($('.url-textbox').val())) {
+            mode = 'stats';
+            $('.url-button p').fadeOut(function() {
+                $('.url-button p').text('stats').fadeIn('slow');
+            });
+        } else if ($('.url-button p').text() == 'stats' && !/^(http:\/\/)?bthl.es\/.+/i.test($('.url-textbox').val())) {
+            mode = 'shorten';
+            $('.url-button p').fadeOut(function() {
+                $('.url-button p').text('shorten').fadeIn('slow');
+            });
         }
     });
 
