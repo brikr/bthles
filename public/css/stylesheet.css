@@ -7,7 +7,8 @@ shade 4 = #271700
 */
 
 body {
-    background-color: #AA7B39;
+    background-color: #333333;
+    /*background-color: #AA7B39;*/
 }
 
 .center {
@@ -26,12 +27,14 @@ body {
 }
 
 #result a {
-    color: #FFDBA7;
+    /*color: #FFDBA7;*/
+    color: #BBBBBB;
     text-decoration: none;
 }
 
 #result p {
-    color: #FFDBA7;
+    /*color: #FFDBA7;*/
+    color: #BBBBBB;
     cursor: pointer;
 }
 
@@ -43,8 +46,10 @@ body {
     height: 32px;
     line-height: 32px;
     padding: 0px 6px;
-    background-color: #694512;
-    color: #EBBA74;
+    /*background-color: #694512;*/
+    background-color: #555555;
+    /*color: #EBBA74;*/
+    color: #DDDDDD;
     outline: none;
     font-family: Arial, Helvetica, sans-serif;
     font-size: 10pt;
@@ -53,10 +58,11 @@ body {
 
 .url-textbox {
     width: 50%;
-    height: 30px;
+    height: 28px;
     font-size: 25px;
-    background-color: #FFDBA7;
+    /*background-color: #FFDBA7;*/
+    background-color: #BBBBBB;
     border: none;
-    padding: none;
+    padding: 2px;
     outline: none;
 }
