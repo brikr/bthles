@@ -11,7 +11,7 @@ require 'sqlite3'
 def open_database
   urls = SQLite3::Database.new 'urls.db'
   urls.execute 'CREATE TABLE IF NOT EXISTS
-    Urls(Short TEXT PRIMARY KEY, Long TEXT, Type TEXT)'
+    Urls(Short TEXT PRIMARY KEY, Long TEXT, Type TEXT, Hits INTEGER)'
   urls
 rescue SQLite3::Exception => e
   puts 'Exception occured when trying to open database'
@@ -40,6 +40,39 @@ get '/' do
   send_file File.join(settings.public_folder, 'index.html')
 end
 
+get '/_stats/:shortened' do
+  urls = open_database
+
+  begin
+    urls.results_as_hash = true
+    url = urls.get_first_row('SELECT * FROM Urls
+                              WHERE Short = :shortened',
+                            params['shortened'])
+
+    if url.nil?
+      return json(
+        error: true,
+        message: 'Invalid URL'
+      )
+    end
+
+    json(
+      error: false,
+      hits: url['Hits'],
+      long: url['Long'],
+      type: url['Type']
+    )
+  rescue SQLite3::Exception => e
+    puts e
+    json(
+      error: true,
+      message: 'Database error'
+    )
+  ensure
+    urls.close
+  end
+end
+
 get '/:shortened' do
   # redirect to shortened url
   # luckily this will just redirect to / if shortened is invalid
@@ -49,9 +82,13 @@ get '/:shortened' do
 
   # find the url
   begin
-    url = urls.get_first_value 'SELECT Long FROM URLS
+    url = urls.get_first_value 'SELECT Long FROM Urls
                                 WHERE Short = :shortened',
                                params['shortened']
+
+    urls.execute 'UPDATE Urls SET Hits = Hits + 1
+                  WHERE Short = :shortened',
+                 params['shortened']
   rescue SQLite3::Exception => e
     puts e
     '<a href="/">Database error</a>'
@@ -79,7 +116,7 @@ post '/' do
     urls = open_database
 
     # check if we've already stored it
-    shortened = urls.get_first_value 'SELECT Short FROM URLS
+    shortened = urls.get_first_value 'SELECT Short FROM Urls
                                       WHERE Long = :url',
                                      url
 
@@ -92,7 +129,7 @@ post '/' do
     end
 
     # set shortened to the next id otherwise
-    output = urls.get_first_value 'SELECT Short FROM URLS
+    output = urls.get_first_value 'SELECT Short FROM Urls
                                    ORDER BY Short DESC
                                    LIMIT 1'
     shortened = (output.base62_decode + 1).base62_encode unless output.nil?
@@ -100,7 +137,7 @@ post '/' do
     shortened ||= '0'
 
     # insert the new url into the database
-    urls.execute 'INSERT INTO URLS VALUES(:shortened, :url, "url")', shortened,
+    urls.execute 'INSERT INTO Urls VALUES(:shortened, :url, "url", 0)', shortened,
                  url
 
     # nice output

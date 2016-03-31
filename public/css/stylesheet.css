@@ -18,11 +18,12 @@ body {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
+    align-content: center;
     justify-content: center;
 }
 
 #result {
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: Helvetica, Arial, sans-serif;
     font-size: 2em;
 }
 
@@ -44,6 +45,7 @@ body {
     margin-left: 5px;
     margin-right: 5px;
     height: 32px;
+    width: 50px;
     line-height: 32px;
     padding: 0px 6px;
     /*background-color: #694512;*/
@@ -51,7 +53,7 @@ body {
     /*color: #EBBA74;*/
     color: #DDDDDD;
     outline: none;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: Helvetica, Arial, sans-serif;
     font-size: 10pt;
     cursor: pointer;
 }
