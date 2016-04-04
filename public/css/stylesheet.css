@@ -20,7 +20,7 @@ body {
 
 .center {
     position: absolute;
-    height: 100%;
+    height: calc(100% - 40px);
     width: 100%;
     display: flex;
     flex-wrap: wrap;
@@ -51,6 +51,11 @@ body {
     /*color: #FFDBA7;*/
     color: #BBBBBB;
     cursor: pointer;
+    margin-top: 40px;
+}
+
+#result a {
+    margin-top: 40px;
 }
 
 .url-button {
@@ -58,6 +63,7 @@ body {
     vertical-align: middle;
     margin-left: 5px;
     margin-right: 5px;
+    margin-top: 40px;
     height: 32px;
     width: 50px;
     line-height: 32px;
@@ -80,5 +86,6 @@ body {
     background-color: #BBBBBB;
     border: none;
     padding: 2px;
+    margin-top: 40px;
     outline: none;
 }

@@ -53,8 +53,8 @@ function updateButton() {
 
 $(document).ready(function() {
     // intro
-    $('.center').hide();
-    $(':not("#result")').fadeIn();
+    $('body').hide();
+    $('body:not("#result")').fadeIn();
     $('.url-textbox').focus();
 
     // stay in focus of input
