@@ -79,7 +79,7 @@ $(document).ready(function() {
 
     // copy result to clipboard
     $(document).on('click', '#result p', function() {
-        clipboard.copy($('#result').text());
+        clipboard.copy('http://' + $('#result').text());
         $(this).fadeOut(function() {
             $('#result').html('<a href="/">copied to clipboard</a>').fadeIn('slow');
         });
