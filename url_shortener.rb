@@ -36,6 +36,7 @@ end
 # change from default port to avoid collisions with other sinatra projects
 set :port, 4073
 
+#index.html
 get '/' do
   send_file File.join(settings.public_folder, 'index.html')
 end
