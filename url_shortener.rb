@@ -11,7 +11,12 @@ require 'sqlite3'
 def open_database
   urls = SQLite3::Database.new 'urls.db'
   urls.execute 'CREATE TABLE IF NOT EXISTS
-    Urls(Short TEXT PRIMARY KEY, Long TEXT, Type TEXT, Hits INTEGER)'
+    Urlss(
+      Id INTEGER PRIMARY KEY,
+      Long TEXT,
+      Type TEXT,
+      Hits INTEGER
+    )'
   urls
 rescue SQLite3::Exception => e
   puts 'Exception occured when trying to open database'
@@ -43,11 +48,12 @@ end
 get '/_stats/:shortened' do
   urls = open_database
 
+  id = params['shortened'].to_i.base62_decode
+
   begin
     urls.results_as_hash = true
     url = urls.get_first_row('SELECT * FROM Urls
-                              WHERE Short = :shortened',
-                            params['shortened'])
+                              WHERE Id = :id', id)
 
     if url.nil?
       return json(
@@ -80,15 +86,14 @@ get '/:shortened' do
   # ready the database
   urls = open_database
 
+  id = params['shortened'].base62_decode
+
   # find the url
   begin
-    url = urls.get_first_value 'SELECT Long FROM Urls
-                                WHERE Short = :shortened',
-                               params['shortened']
-
-    urls.execute 'UPDATE Urls SET Hits = Hits + 1
-                  WHERE Short = :shortened',
-                 params['shortened']
+    url = urls.get_first_value('SELECT Long FROM Urls
+                                WHERE Id = :id', id)
+    urls.execute('UPDATE Urls SET Hits = Hits + 1
+                  WHERE Id = :id', id)
   rescue SQLite3::Exception => e
     puts e
     '<a href="/">Database error</a>'
@@ -116,29 +121,27 @@ post '/' do
     urls = open_database
 
     # check if we've already stored it
-    shortened = urls.get_first_value 'SELECT Short FROM Urls
-                                      WHERE Long = :url',
-                                     url
+    id = urls.get_first_value('SELECT Id FROM Urls
+                               WHERE Long = :url', url)
 
     # return shortened url if we found it in the database
-    unless shortened.nil?
+    unless id.nil?
       return json(
         error: false,
-        url: "bthl.es/#{shortened}"
+        url: "bthl.es/#{id.base62_encode}"
       )
     end
 
     # set shortened to the next id otherwise
-    output = urls.get_first_value 'SELECT Short FROM Urls
-                                   ORDER BY Short DESC
-                                   LIMIT 1'
-    shortened = (output.base62_decode + 1).base62_encode unless output.nil?
+    id = urls.get_first_value('SELECT Id FROM Urls
+                               ORDER BY Id DESC LIMIT 1')
+    id += 1 unless id.nil?
     # special case for first url inserted
-    shortened ||= '0'
+    id ||= 0
+    shortened = id.base62_encode
 
     # insert the new url into the database
-    urls.execute 'INSERT INTO Urls VALUES(:shortened, :url, "url", 0)', shortened,
-                 url
+    urls.execute('INSERT INTO Urls VALUES(:id, :url, "url", 0)', id, url)
 
     # nice output
     json(
