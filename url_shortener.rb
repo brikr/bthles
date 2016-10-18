@@ -11,7 +11,7 @@ require 'sqlite3'
 def open_database
   urls = SQLite3::Database.new 'urls.db'
   urls.execute 'CREATE TABLE IF NOT EXISTS
-    Urlss(
+    Urls(
       Id INTEGER PRIMARY KEY,
       Long TEXT,
       Type TEXT,
