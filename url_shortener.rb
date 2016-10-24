@@ -48,7 +48,7 @@ end
 get '/_stats/:shortened' do
   urls = open_database
 
-  id = params['shortened'].to_i.base62_decode
+  id = params['shortened'].base62_decode
 
   begin
     urls.results_as_hash = true
