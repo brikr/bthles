@@ -7,3 +7,4 @@
 - Migrate to more scalable framework
   - Determine framework (lambda/serverless, Rails)
   - Determine storage solution (DynamoDB, Firebase)
+- Public stats page
