@@ -3,3 +3,7 @@
 
 ## To Do
 - Support multiple shortening types (e.g. raw text)
+- SSL
+- Migrate to more scalable framework
+  - Determine framework (lambda/serverless, Rails)
+  - Determine storage solution (DynamoDB, Firebase)
