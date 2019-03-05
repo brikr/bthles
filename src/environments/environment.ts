@@ -4,6 +4,14 @@
 
 export const environment = {
   production: false,
+  firebase: {
+    apiKey: 'AIzaSyB_S6VtoIaSryUXknqPz3DXGPyHUtMkH5U',
+    authDomain: 'bthles-dev.firebaseapp.com',
+    databaseURL: 'https://bthles-dev.firebaseio.com',
+    projectId: 'bthles-dev',
+    storageBucket: 'bthles-dev.appspot.com',
+    messagingSenderId: '4574988607'
+  },
 };
 
 /*

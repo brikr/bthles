@@ -1,4 +1,10 @@
 import {Component} from '@angular/core';
+import {AngularFirestore} from '@angular/fire/firestore';
+import {Observable} from 'rxjs';
+
+interface Meta {
+  nextUrl: string;
+}
 
 @Component({
   selector: 'bthles-root',
@@ -6,5 +12,9 @@ import {Component} from '@angular/core';
   styleUrls: ['app.component.scss']
 })
 export class AppComponent {
-  title = 'bthles';
+  meta$: Observable<Meta|undefined>;
+
+  constructor(db: AngularFirestore) {
+    this.meta$ = db.doc<Meta>('meta/meta').valueChanges();
+  }
 }
