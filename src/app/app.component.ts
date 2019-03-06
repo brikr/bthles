@@ -25,6 +25,7 @@ export class AppComponent {
     this.meta$ = db.doc<Meta>('meta/meta').valueChanges();
   }
 
+  // TODO(brikr): this workflow should be moved to a service
   async shorten() {
     if (!this.content) {
       // nop on empty content
