@@ -8,7 +8,7 @@ export class AuthService {
       private readonly afAuth: AngularFireAuth,
   ) {}
 
-  login(type: 'GOOGLE'|'ANON'): Promise<auth.UserCredential> {
+  login(type: 'GOOGLE'|'ANON' = 'ANON'): Promise<auth.UserCredential> {
     switch (type) {
       default:
       case 'ANON':
@@ -16,5 +16,13 @@ export class AuthService {
       case 'GOOGLE':
         return this.afAuth.auth.signInWithPopup(new auth.GoogleAuthProvider());
     }
+  }
+
+  getUid(): string {
+    const user = this.afAuth.auth.currentUser;
+    if (user === null) {
+      return '';
+    }
+    return user.uid;
   }
 }
