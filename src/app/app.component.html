@@ -1,5 +1,8 @@
 <h1>Hello I am app</h1>
 <p>{{ (meta$ | async)?.nextUrl }}</p>
-<mat-form-field>
-  <input matInput placeholder="Test">
-</mat-form-field>
+<div class="controls" fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="8px">
+  <mat-form-field fxFlex="50">
+    <input matInput placeholder="URL or text" [(ngModel)]="content">
+  </mat-form-field>
+  <button mat-flat-button color="primary" (click)="shorten()">shortenifyicate</button>
+</div>

@@ -2,6 +2,8 @@ import {NgModule} from '@angular/core';
 import {AngularFireModule} from '@angular/fire';
 import {AngularFireAuthModule} from '@angular/fire/auth';
 import {AngularFirestoreModule} from '@angular/fire/firestore';
+import {FlexLayoutModule} from '@angular/flex-layout';
+import {FormsModule} from '@angular/forms';
 import {BrowserModule} from '@angular/platform-browser';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
@@ -22,6 +24,8 @@ import {MaterialModule} from './material.module';
     AppRoutingModule,
     BrowserAnimationsModule,
     BrowserModule,
+    FlexLayoutModule,
+    FormsModule,
     MaterialModule,
   ],
   providers: [],
