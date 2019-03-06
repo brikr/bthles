@@ -12,10 +12,14 @@ import {environment} from '../environments/environment';
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {MaterialModule} from './material.module';
+import { ShortenerComponent } from './shortener/shortener.component';
+import { LinkContentComponent } from './link-content/link-content.component';
 
 @NgModule({
   declarations: [
     AppComponent,
+    ShortenerComponent,
+    LinkContentComponent,
   ],
   imports: [
     AngularFireAuthModule,
