@@ -6,14 +6,13 @@ import {FlexLayoutModule} from '@angular/flex-layout';
 import {FormsModule} from '@angular/forms';
 import {BrowserModule} from '@angular/platform-browser';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {AppRoutingModule} from '@bthles/app-routing.module';
+import {AppComponent} from '@bthles/app.component';
+import {LinkContentComponent} from '@bthles/link-content/link-content.component';
+import {MaterialModule} from '@bthles/material.module';
+import {ShortenerComponent} from '@bthles/shortener/shortener.component';
 
 import {environment} from '../environments/environment';
-
-import {AppRoutingModule} from './app-routing.module';
-import {AppComponent} from './app.component';
-import {MaterialModule} from './material.module';
-import { ShortenerComponent } from './shortener/shortener.component';
-import { LinkContentComponent } from './link-content/link-content.component';
 
 @NgModule({
   declarations: [

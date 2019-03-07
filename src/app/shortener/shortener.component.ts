@@ -1,8 +1,8 @@
 import {Component} from '@angular/core';
 import {AngularFirestore} from '@angular/fire/firestore';
+import {AuthService} from '@bthles/auth.service';
 import {interval, ReplaySubject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
-import {AuthService} from '../auth.service';
 
 // TODO(#19) Move this to a shared types file
 interface Meta {

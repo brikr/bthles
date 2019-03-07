@@ -1,8 +1,8 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 
-import {LinkContentComponent} from './link-content/link-content.component';
-import {ShortenerComponent} from './shortener/shortener.component';
+import {LinkContentComponent} from '@bthles/link-content/link-content.component';
+import {ShortenerComponent} from '@bthles/shortener/shortener.component';
 
 const routes: Routes = [
   {
