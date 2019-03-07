@@ -21,6 +21,9 @@
     "paths": {
       "@bthles/*": [
         "src/app/*"
+      ],
+      "@bthles-types/*": [
+        "types/*"
       ]
     }
   },

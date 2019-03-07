@@ -1,13 +1,9 @@
 import {Component} from '@angular/core';
 import {AngularFirestore} from '@angular/fire/firestore';
+import {Meta} from '@bthles-types/types';
 import {AuthService} from '@bthles/auth.service';
 import {interval, ReplaySubject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
-
-// TODO(#19) Move this to a shared types file
-interface Meta {
-  nextUrl: string;
-}
 
 @Component({
   selector: 'bthles-shortener',

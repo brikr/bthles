@@ -1,6 +1,8 @@
 import * as admin from 'firebase-admin';
 import * as functions from 'firebase-functions';
 
+import {Meta} from '../../types/types';
+
 admin.initializeApp();
 const db = admin.firestore();
 
@@ -46,12 +48,13 @@ function base62Decode(str: string): number {
 // just increment once in nearly all cases.
 export const onLinkCreate =
     functions.firestore.document('links/{linkId}')
-        .onCreate(async (linkDoc, context) => {
+        .onCreate(async (_linkDoc, _context) => {
           // Get value of nextUrl
           // nextUrl should always be defined. If it's not, then the
           // database wasn't setup and FE shouldn't have been able to make
           // a link, so we won't be here.
-          let nextUrl = (await db.doc('meta/meta').get()).data()!.nextUrl
+          const meta = (await db.doc('meta/meta').get()).data()! as Meta;
+          let nextUrl = meta.nextUrl
 
           // Check if nextUrl is taken
           let exists = (await db.collection('links').doc(nextUrl).get()).exists;
