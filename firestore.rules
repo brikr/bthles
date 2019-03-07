@@ -5,12 +5,22 @@ service cloud.firestore {
     }
 
     match /meta/{document=**} {
-      allow read: if request.auth.uid != null;
+      allow read: if authed();
       allow write: if false;
     }
 
     match /links/{document=**} {
-      allow read, create: if request.auth.uid != null;
+      allow read: if authed();
+      allow create: if authed() && ownerMatchesUserId();
     }
   }
+}
+
+function authed() {
+  return request.auth.uid != null;
+}
+
+// True if the owner field in resource data matches the requester's user ID
+function ownerMatchesUserId() {
+  return request.auth.uid == request.resource.data.owner;
 }
