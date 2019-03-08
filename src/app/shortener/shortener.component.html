@@ -1,12 +1,14 @@
 <div class="root" fxLayout="row" fxLayoutAlign="center center">
   <ng-container [ngSwitch]="state">
-    <div *ngSwitchCase="ShortenerState.START" fxFlex="50" fxLayout="row" fxLayoutAlign="space-between center"
-      fxLayoutGap="8px" @appearDisappear>
+    <form #form="ngForm" (ngSubmit)="shorten()" *ngSwitchCase="ShortenerState.START" fxFlex="50" fxLayout="row"
+      fxLayoutAlign="space-between center" fxLayoutGap="8px" @appearDisappear>
       <mat-form-field fxFlex>
-        <input matInput placeholder="URL" [(ngModel)]="content" (keydown.enter)="shorten()" autofocus>
+        <input matInput placeholder="URL" name="content" [(ngModel)]="content" #contentModel="ngModel" validUrl
+          autofocus>
+        <mat-error *ngIf="content && contentModel.hasError('invalidUrl')">Invalid URL</mat-error>
       </mat-form-field>
-      <button mat-flat-button color="primary" (click)="shorten()">Shorten</button>
-    </div>
+      <button mat-flat-button color="primary" type="submit" [disabled]="!form.valid">Shorten</button>
+    </form>
 
     <div *ngSwitchCase="ShortenerState.AWAITING_RESPONSE" fxFlex="50" fxLayout="row" fxLayoutAlign="center center"
       @appearDisappear>

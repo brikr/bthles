@@ -13,12 +13,14 @@ import {MaterialModule} from '@bthles/material.module';
 import {ShortenerComponent} from '@bthles/shortener/shortener.component';
 
 import {environment} from '../environments/environment';
+import {UrlValidatorDirective} from './directives/url-validator.directive';
 
 @NgModule({
   declarations: [
     AppComponent,
     ShortenerComponent,
     LinkContentComponent,
+    UrlValidatorDirective,
   ],
   imports: [
     AngularFireAuthModule,

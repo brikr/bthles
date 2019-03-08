@@ -45,7 +45,7 @@ export class ShortenerComponent {
   state = ShortenerState.START;
   shortUrl = '';
 
-  // give template access to enum
+  // give template access to some items
   ShortenerState = ShortenerState;
 
   constructor(
