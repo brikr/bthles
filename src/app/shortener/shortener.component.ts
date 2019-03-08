@@ -61,6 +61,11 @@ export class ShortenerComponent {
       return;
     }
 
+    // Add http protocol if none is provided
+    if (!this.content.includes('://')) {
+      this.content = `http://${this.content}`;
+    }
+
     this.state = ShortenerState.AWAITING_RESPONSE;
 
     // Attempt to create link at nextUrl. If it fails due to lack of

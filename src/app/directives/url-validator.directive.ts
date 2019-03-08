@@ -10,9 +10,13 @@ import {isURL as isUrl} from 'validator';
   ],
 })
 export class UrlValidatorDirective implements Validator {
+  private isUrlOptions = {
+    // Don't require a protocol, but if one is used, it must be http or https
+    protocols: ['http', 'https'],
+  };
+
   validate(control: AbstractControl): ValidationErrors|null {
-    if (control.value !== null &&
-        !isUrl(control.value, {require_protocol: true})) {
+    if (control.value !== null && !isUrl(control.value, this.isUrlOptions)) {
       return {invalidUrl: true};
     }
     return null;
