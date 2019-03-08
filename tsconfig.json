@@ -24,6 +24,9 @@
       ],
       "@bthles-types/*": [
         "types/*"
+      ],
+      "@bthles-environment/*": [
+        "src/environments/*"
       ]
     }
   },

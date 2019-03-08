@@ -1,6 +1,8 @@
 import {animate, style, transition, trigger} from '@angular/animations';
 import {Component} from '@angular/core';
 import {AngularFirestore} from '@angular/fire/firestore';
+import {MatSnackBar} from '@angular/material';
+import {environment} from '@bthles-environment/environment';
 import {Meta} from '@bthles-types/types';
 import {AuthService} from '@bthles/auth.service';
 import {interval, ReplaySubject} from 'rxjs';
@@ -49,6 +51,7 @@ export class ShortenerComponent {
   constructor(
       private readonly db: AngularFirestore,
       private readonly authService: AuthService,
+      private readonly snackBar: MatSnackBar,
   ) {}
 
   // TODO(brikr): this workflow should be moved to a service
@@ -81,11 +84,18 @@ export class ShortenerComponent {
         });
         success.next();
         this.state = ShortenerState.LINK_RECEIVED;
-        this.shortUrl = meta.nextUrl;
+        this.shortUrl = `${environment.baseUrl}/${meta.nextUrl}`;
       } catch {
         // nop, retry
       }
     });
+  }
+
+  copyInputContents(el: HTMLInputElement) {
+    el.select();
+    document.execCommand('copy');
+
+    this.snackBar.open('Copied to clipboard', undefined, {duration: 1000});
   }
 }
 

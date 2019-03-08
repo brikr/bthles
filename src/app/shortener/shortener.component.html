@@ -5,7 +5,7 @@
       <mat-form-field fxFlex>
         <input matInput placeholder="URL" [(ngModel)]="content" (keydown.enter)="shorten()" autofocus>
       </mat-form-field>
-      <button mat-flat-button color="primary" class="shorten-button" (click)="shorten()">Shorten</button>
+      <button mat-flat-button color="primary" (click)="shorten()">Shorten</button>
     </div>
 
     <div *ngSwitchCase="ShortenerState.AWAITING_RESPONSE" fxFlex="50" fxLayout="row" fxLayoutAlign="center center"
@@ -14,8 +14,11 @@
     </div>
 
     <div *ngSwitchCase="ShortenerState.LINK_RECEIVED" fxFlex="50" fxLayout="row" fxLayoutAlign="center center"
-      @appearDisappear>
-      <p>short url is {{ shortUrl }}</p>
+      fxLayoutGap="8px" @appearDisappear>
+      <mat-form-field fxFlex>
+        <input matInput #shortUrlInput [value]="shortUrl" (click)="shortUrlInput.select()" readonly>
+      </mat-form-field>
+      <button mat-flat-button color="primary" (click)="copyInputContents(shortUrlInput)">Copy</button>
     </div>
   </ng-container>
 </div>
