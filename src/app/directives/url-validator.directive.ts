@@ -11,7 +11,8 @@ import {isURL as isUrl} from 'validator';
 })
 export class UrlValidatorDirective implements Validator {
   validate(control: AbstractControl): ValidationErrors|null {
-    if (control.value !== null && !isUrl(control.value)) {
+    if (control.value !== null &&
+        !isUrl(control.value, {require_protocol: true})) {
       return {invalidUrl: true};
     }
     return null;
