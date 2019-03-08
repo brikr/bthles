@@ -1,3 +1,15 @@
 .root {
   margin-top: 300px;
+
+  div {
+    height: 70px;
+    width: 50%;
+
+    &.ng-animating {
+      // For some reason, the elements on this page are 8px wider while
+      // animating, which results in some slight jumpiness. Reducing their
+      // width while animating fixes this.
+      width: calc(50% - 8px);
+    }
+  }
 }

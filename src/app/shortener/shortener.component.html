@@ -1,6 +1,21 @@
-<div class="root" fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="8px">
-  <mat-form-field fxFlex="50">
-    <input matInput placeholder="URL" [(ngModel)]="content" (keydown.enter)="shorten()" autofocus>
-  </mat-form-field>
-  <button mat-flat-button color="primary" class="shorten-button" (click)="shorten()">Shorten</button>
+<div class="root" fxLayout="row" fxLayoutAlign="center center">
+  <ng-container [ngSwitch]="state">
+    <div *ngSwitchCase="ShortenerState.START" fxFlex="50" fxLayout="row" fxLayoutAlign="space-between center"
+      fxLayoutGap="8px" @appearDisappear>
+      <mat-form-field fxFlex>
+        <input matInput placeholder="URL" [(ngModel)]="content" (keydown.enter)="shorten()" autofocus>
+      </mat-form-field>
+      <button mat-flat-button color="primary" class="shorten-button" (click)="shorten()">Shorten</button>
+    </div>
+
+    <div *ngSwitchCase="ShortenerState.AWAITING_RESPONSE" class="awaiting-response" fxFlex="50" fxLayout="row"
+      fxLayoutAlign="center center" @appearDisappear>
+      <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    </div>
+
+    <div *ngSwitchCase="ShortenerState.LINK_RECEIVED" fxFlex="50" fxLayout="row" fxLayoutAlign="center center"
+      @appearDisappear>
+      <p>short url is {{ shortUrl }}</p>
+    </div>
+  </ng-container>
 </div>

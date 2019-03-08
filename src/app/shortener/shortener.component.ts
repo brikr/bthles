@@ -1,3 +1,4 @@
+import {animate, style, transition, trigger} from '@angular/animations';
 import {Component} from '@angular/core';
 import {AngularFirestore} from '@angular/fire/firestore';
 import {Meta} from '@bthles-types/types';
@@ -8,10 +9,42 @@ import {takeUntil} from 'rxjs/operators';
 @Component({
   selector: 'bthles-shortener',
   templateUrl: './shortener.component.html',
-  styleUrls: ['./shortener.component.scss']
+  styleUrls: ['./shortener.component.scss'],
+  animations: [
+    trigger(
+        'appearDisappear',
+        [
+          transition(
+              ':enter',
+              [
+                style({opacity: '0', transform: 'translateY(-20px)'}),
+                animate(
+                    '225ms', style({opacity: '1', transform: 'translateY(0)'}))
+              ]),
+          transition(
+              ':leave',
+              [
+                style({
+                  opacity: '1',
+                  transform: 'translateY(0)',
+                  // Making elements absolute when leaving lets them overlap
+                  // with the incoming elements
+                  position: 'absolute'
+                }),
+                animate(
+                    '195ms',
+                    style({opacity: '0', transform: 'translateY(20px)'}))
+              ]),
+        ]),
+  ]
 })
 export class ShortenerComponent {
   content = '';
+  state = ShortenerState.START;
+  shortUrl = '';
+
+  // give template access to enum
+  ShortenerState = ShortenerState;
 
   constructor(
       private readonly db: AngularFirestore,
@@ -24,6 +57,8 @@ export class ShortenerComponent {
       // nop on empty content
       return;
     }
+
+    this.state = ShortenerState.AWAITING_RESPONSE;
 
     // Attempt to create link at nextUrl. If it fails due to lack of
     // permissions, that means it already exists and the Firestore function is
@@ -45,9 +80,17 @@ export class ShortenerComponent {
           owner: this.authService.getUid(),
         });
         success.next();
+        this.state = ShortenerState.LINK_RECEIVED;
+        this.shortUrl = meta.nextUrl;
       } catch {
         // nop, retry
       }
     });
   }
+}
+
+enum ShortenerState {
+  START,
+  AWAITING_RESPONSE,
+  LINK_RECEIVED,
 }
