@@ -8,8 +8,8 @@
       <button mat-flat-button color="primary" class="shorten-button" (click)="shorten()">Shorten</button>
     </div>
 
-    <div *ngSwitchCase="ShortenerState.AWAITING_RESPONSE" class="awaiting-response" fxFlex="50" fxLayout="row"
-      fxLayoutAlign="center center" @appearDisappear>
+    <div *ngSwitchCase="ShortenerState.AWAITING_RESPONSE" fxFlex="50" fxLayout="row" fxLayoutAlign="center center"
+      @appearDisappear>
       <mat-progress-bar mode="indeterminate"></mat-progress-bar>
     </div>
 
