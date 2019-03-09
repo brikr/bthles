@@ -1,7 +1,7 @@
 <div class="root" fxLayout="row" fxLayoutAlign="center center">
   <ng-container [ngSwitch]="state">
     <form #form="ngForm" (ngSubmit)="shorten()" *ngSwitchCase="ShortenerState.START" fxFlex="50" fxLayout="row"
-      fxLayoutAlign="space-between center" fxLayoutGap="8px" @appearDisappear>
+      fxLayoutAlign="space-between center" fxLayoutGap="8px" @appearDisappear autocomplete="off">
       <mat-form-field fxFlex>
         <input matInput placeholder="URL" name="content" [(ngModel)]="content" #contentModel="ngModel" validUrl
           autofocus>
