@@ -1,6 +1,8 @@
 import {animate, style, transition, trigger} from '@angular/animations';
+import {fn} from '@angular/compiler/src/output/output_ast';
 import {Component} from '@angular/core';
 import {AngularFirestore} from '@angular/fire/firestore';
+import {AngularFireFunctions} from '@angular/fire/functions';
 import {MatSnackBar} from '@angular/material';
 import {environment} from '@bthles-environment/environment';
 import {Meta} from '@bthles-types/types';
@@ -50,6 +52,7 @@ export class ShortenerComponent {
 
   constructor(
       private readonly db: AngularFirestore,
+      private readonly fns: AngularFireFunctions,
       private readonly authService: AuthService,
       private readonly snackBar: MatSnackBar,
   ) {}
@@ -91,7 +94,14 @@ export class ShortenerComponent {
         this.state = ShortenerState.LINK_RECEIVED;
         this.shortUrl = `${environment.baseUrl}/${meta.nextUrl}`;
       } catch {
-        // nop, retry
+        // We get an error if we didn't have permissions to create the record,
+        // likely meaning it already exists. In this case, we request that the
+        // server increment the nextUrl (it is likely already doing this due to
+        // an onCreate hook, but in case it's slow or anything, we run it here
+        // too. It's idempotent). Request server to increment
+        const incrementNextUrl =
+            this.fns.httpsCallable('callableIncrementNextUrl');
+        await incrementNextUrl({}).toPromise();
       }
     });
   }

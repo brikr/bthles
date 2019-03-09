@@ -40,30 +40,43 @@ function base62Decode(str: string): number {
   return result;
 }
 
-// When a link is created, we find the next available slot for the next link
-// that someone decides to create. The reason we can't just increment a counter
-// is because we want to support custom links, and it's possible that the
-// automatic "shortest link possible" will bump into someone's custom link, so
-// we always just increment until we find a free space. Chances are this will
-// just increment once in nearly all cases.
+// Find the next available slot for the next link that someone decides to
+// create. The reason we can't just increment a counter is because we want to
+// support custom links, and it's possible that the automatic "shortest link
+// possible" will bump into someone's custom link, so we always just increment
+// until we find a free space. Chances are this will just increment once in
+// nearly all cases.
+async function updateNextUrl() {
+  // Get value of nextUrl
+  const meta = (await db.doc('meta/meta').get()).data()! as Meta | undefined;
+
+  if (meta === undefined) {
+    // Fresh database. Set nextUrl to '0'
+    await db.doc('meta/meta').update({nextUrl: '0'});
+    return;
+  }
+
+  let nextUrl = meta.nextUrl
+
+  // Check if nextUrl is taken
+  let exists = (await db.collection('links').doc(nextUrl).get()).exists;
+  while (exists) {
+    // Incremement nextUrl until we find an open link
+    nextUrl = base62Encode(base62Decode(nextUrl) + 1);
+    exists = (await db.collection('links').doc(nextUrl).get()).exists;
+  }
+
+  // Update db with new nextUrl
+  await db.doc('meta/meta').update({nextUrl: nextUrl});
+}
+
 export const onLinkCreateIncrementNextUrl =
     functions.firestore.document('links/{linkId}')
         .onCreate(async (_snapshot, _context) => {
-          // Get value of nextUrl
-          // nextUrl should always be defined. If it's not, then the database
-          // wasn't setup and FE shouldn't have been able to make a link, so we
-          // won't be here.
-          const meta = (await db.doc('meta/meta').get()).data()! as Meta;
-          let nextUrl = meta.nextUrl
-
-          // Check if nextUrl is taken
-          let exists = (await db.collection('links').doc(nextUrl).get()).exists;
-          while (exists) {
-            // Incremement nextUrl until we find an open link
-            nextUrl = base62Encode(base62Decode(nextUrl) + 1);
-            exists = (await db.collection('links').doc(nextUrl).get()).exists;
-          }
-
-          // Update db with new nextUrl
-          await db.doc('meta/meta').update({nextUrl: nextUrl});
+          await updateNextUrl();
         });
+
+export const callableIncrementNextUrl =
+    functions.https.onCall(async (_data, _context) => {
+      await updateNextUrl();
+    })

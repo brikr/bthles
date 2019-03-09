@@ -2,6 +2,7 @@ import {NgModule} from '@angular/core';
 import {AngularFireModule} from '@angular/fire';
 import {AngularFireAuthModule} from '@angular/fire/auth';
 import {AngularFirestoreModule} from '@angular/fire/firestore';
+import {AngularFireFunctionsModule} from '@angular/fire/functions';
 import {FlexLayoutModule} from '@angular/flex-layout';
 import {FormsModule} from '@angular/forms';
 import {BrowserModule} from '@angular/platform-browser';
@@ -24,6 +25,7 @@ import {UrlValidatorDirective} from './directives/url-validator.directive';
   ],
   imports: [
     AngularFireAuthModule,
+    AngularFireFunctionsModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
     AppRoutingModule,
