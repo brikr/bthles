@@ -1,5 +1,8 @@
 {
   "projects": {
-    "default": "bthles-dev"
+    "default": "bthles-dev",
+    "dev": "bthles-dev",
+    "prod": "bthles",
+    "staging": "bthles-dev"
   }
 }
