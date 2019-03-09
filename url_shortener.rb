@@ -107,6 +107,9 @@ get '/:shortened' do
 end
 
 post '/' do
+  # readonly mode for v3. remove this line if you need to roll back
+  return json(error: true, message: 'bthl.es is in readonly mode until v3 is released')
+
   # get url from post
   url = params['url']
 

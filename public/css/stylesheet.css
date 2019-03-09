@@ -18,6 +18,16 @@ body {
     /*background-color: #AA7B39;*/
 }
 
+.notice {
+    background-color: #555555;
+    color: #DDDDDD;
+    padding: 10px 0;
+    text-align: center;
+    position: fixed;
+    top: 0;
+    width: 100%;
+}
+
 .center {
     position: absolute;
     height: calc(100% - 40px);
