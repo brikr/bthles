@@ -8,6 +8,5 @@ export const environment = {
     storageBucket: 'bthles.appspot.com',
     messagingSenderId: '312510828218'
   },
-  // TODO(brikr): When the SSL cert is issued, change this to HTTPS
-  baseUrl: 'http://bthl.es',
+  baseUrl: 'https://bthl.es',
 };
