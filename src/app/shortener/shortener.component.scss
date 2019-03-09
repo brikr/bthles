@@ -1,9 +1,18 @@
 .root {
   margin-top: 300px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
-  div, form {
-    height: 70px;
+  @media(max-height: 600px) {
+    margin-top: 100px;
+  }
+
+  & > * {
+    flex-basis: 50%;
     width: 50%;
+    min-width: 600px;
+    height: 70px;
 
     &.ng-animating {
       // For some reason, the elements on this page are 8px wider while
@@ -11,5 +20,47 @@
       // width while animating fixes this.
       width: calc(50% - 8px);
     }
+
+    @media(max-width: 700px) {
+      flex-basis: 80%;
+      width: 80%;
+      min-width: 0;
+      height: 100px;
+
+      &.ng-animating {
+        // I do not understand why things change size when animating, but this
+        // different value fixes it here.
+        width: calc(80% - 13px);
+      }
+    }
   }
+}
+
+.shorten-form, .shorten-response {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  mat-form-field {
+    flex: 1 1;
+    padding-right: 8px;
+  }
+ 
+  @media(max-width: 700px) {
+    flex-wrap: wrap;
+
+    & > * {
+      flex-basis: 100%;
+    }
+
+    mat-form-field {
+      padding-right: 0;
+    }
+  }
+}
+
+.spinner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
