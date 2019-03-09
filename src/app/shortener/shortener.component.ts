@@ -1,5 +1,4 @@
 import {animate, style, transition, trigger} from '@angular/animations';
-import {fn} from '@angular/compiler/src/output/output_ast';
 import {Component} from '@angular/core';
 import {AngularFirestore} from '@angular/fire/firestore';
 import {AngularFireFunctions} from '@angular/fire/functions';
@@ -7,6 +6,7 @@ import {MatSnackBar} from '@angular/material';
 import {environment} from '@bthles-environment/environment';
 import {Meta} from '@bthles-types/types';
 import {AuthService} from '@bthles/auth.service';
+import {GoogleAnalyticsService} from '@bthles/google-analytics.service';
 import {interval, ReplaySubject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 
@@ -55,6 +55,7 @@ export class ShortenerComponent {
       private readonly fns: AngularFireFunctions,
       private readonly authService: AuthService,
       private readonly snackBar: MatSnackBar,
+      private readonly analytics: GoogleAnalyticsService,
   ) {}
 
   // TODO(brikr): this workflow should be moved to a service
@@ -68,6 +69,9 @@ export class ShortenerComponent {
     if (!this.content.includes('://')) {
       this.content = `http://${this.content}`;
     }
+
+    this.analytics.sendEvent(
+        {eventCategory: 'ShortenerComponent', eventAction: 'shorten'});
 
     this.state = ShortenerState.AWAITING_RESPONSE;
 
