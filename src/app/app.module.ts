@@ -17,6 +17,7 @@ import {ClipboardModule} from 'ngx-clipboard';
 import {environment} from '../environments/environment';
 
 import {UrlValidatorDirective} from './directives/url-validator.directive';
+import {FooterComponent} from './footer/footer.component';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import {UrlValidatorDirective} from './directives/url-validator.directive';
     ShortenerComponent,
     LinkContentComponent,
     UrlValidatorDirective,
+    FooterComponent,
   ],
   imports: [
     AngularFireAuthModule,
