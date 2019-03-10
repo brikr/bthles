@@ -23,7 +23,8 @@ import {takeUntil} from 'rxjs/operators';
               [
                 style({opacity: '0', transform: 'translateY(-20px)'}),
                 animate(
-                    '225ms', style({opacity: '1', transform: 'translateY(0)'}))
+                    '225ms ease-out',
+                    style({opacity: '1', transform: 'translateY(0)'}))
               ]),
           transition(
               ':leave',
@@ -31,16 +32,16 @@ import {takeUntil} from 'rxjs/operators';
                 style({
                   opacity: '1',
                   transform: 'translateY(0)',
-                  // Making elements absolute when leaving lets them overlap
+                  // Making elements fixed when leaving lets them overlap
                   // with the incoming elements
-                  position: 'absolute'
+                  position: 'fixed'
                 }),
                 animate(
-                    '195ms',
+                    '195ms ease-in',
                     style({opacity: '0', transform: 'translateY(20px)'}))
               ]),
         ]),
-  ]
+  ],
 })
 export class ShortenerComponent {
   content = '';

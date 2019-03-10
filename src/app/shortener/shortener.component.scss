@@ -14,24 +14,11 @@
     min-width: 600px;
     height: 70px;
 
-    &.ng-animating {
-      // For some reason, the elements on this page are 8px wider while
-      // animating, which results in some slight jumpiness. Reducing their
-      // width while animating fixes this.
-      width: calc(50% - 8px);
-    }
-
     @media(max-width: 700px) {
       flex-basis: 80%;
       width: 80%;
       min-width: 0;
       height: 100px;
-
-      &.ng-animating {
-        // I do not understand why things change size when animating, but this
-        // different value fixes it here.
-        width: calc(80% - 13px);
-      }
     }
   }
 }
