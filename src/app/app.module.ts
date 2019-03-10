@@ -12,8 +12,10 @@ import {AppComponent} from '@bthles/app.component';
 import {LinkContentComponent} from '@bthles/link-content/link-content.component';
 import {MaterialModule} from '@bthles/material.module';
 import {ShortenerComponent} from '@bthles/shortener/shortener.component';
+import {ClipboardModule} from 'ngx-clipboard';
 
 import {environment} from '../environments/environment';
+
 import {UrlValidatorDirective} from './directives/url-validator.directive';
 
 @NgModule({
@@ -31,6 +33,7 @@ import {UrlValidatorDirective} from './directives/url-validator.directive';
     AppRoutingModule,
     BrowserAnimationsModule,
     BrowserModule,
+    ClipboardModule,
     FlexLayoutModule,
     FormsModule,
     MaterialModule,

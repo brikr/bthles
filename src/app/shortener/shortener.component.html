@@ -18,7 +18,8 @@
       <mat-form-field fxFlex>
         <input matInput #shortUrlInput [value]="shortUrl" (click)="shortUrlInput.select()" readonly>
       </mat-form-field>
-      <button mat-flat-button color="primary" (click)="copyInputContents(shortUrlInput)">Copy</button>
+      <button mat-flat-button color="primary" ngxClipboard [cbContent]="shortUrl"
+        (cbOnSuccess)="showCopiedSnackBar()">Copy</button>
     </div>
   </ng-container>
 </div>

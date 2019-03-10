@@ -110,10 +110,7 @@ export class ShortenerComponent {
     });
   }
 
-  copyInputContents(el: HTMLInputElement) {
-    el.select();
-    document.execCommand('copy');
-
+  showCopiedSnackBar() {
     this.snackBar.open('Copied to clipboard', undefined, {duration: 1000});
   }
 }
