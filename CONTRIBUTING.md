@@ -1,5 +1,5 @@
 # Contributing to bthles
-Thanks for your interest in contributing! Be sure to check out the [Developer getting started](developer-getting-started.md) documentation to get setup with serving bthl.es locally for development. Once you're all setup, take a look at the [help wanted issues](https://github.com/brikr/bthles/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22) to see where we'd like you to contribute.
+Thanks for your interest in contributing! Be sure to check out the [Developer getting started](docs/developer-getting-started.md) documentation to get setup with serving bthl.es locally for development. Once you're all setup, take a look at the [help wanted issues](https://github.com/brikr/bthles/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22) to see where we'd like you to contribute.
 
 Of course, you aren't limited to contributing towards the help wanted issues, or any of the currently tracked issues. However if you'd like to contribute a change that isn't tracked in an issue, we'd recommend filing one so that there is a good place for discussion.
 
