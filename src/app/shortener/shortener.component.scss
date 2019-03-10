@@ -1,20 +1,22 @@
+@import 'styles/mixins';
+
 .root {
   margin-top: 300px;
   display: flex;
   justify-content: center;
   align-items: center;
 
-  @media(max-height: 600px) {
+  @include mobile-landscape {
     margin-top: 100px;
   }
 
   & > * {
     flex-basis: 50%;
     width: 50%;
-    min-width: 600px;
+    min-width: 500px;
     height: 70px;
 
-    @media(max-width: 700px) {
+    @include mobile-portrait {
       flex-basis: 80%;
       width: 80%;
       min-width: 0;
@@ -33,7 +35,7 @@
     padding-right: 8px;
   }
  
-  @media(max-width: 700px) {
+  @include mobile-portrait {
     flex-wrap: wrap;
 
     & > * {

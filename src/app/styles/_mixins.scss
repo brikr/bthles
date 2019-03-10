@@ -1,0 +1,21 @@
+@mixin mobile {
+  @include mobile-portrait {
+    @content;
+  }
+
+  @include mobile-landscape {
+    @content;
+  }
+}
+
+@mixin mobile-portrait {
+  @media(max-width: 600px) {
+    @content;
+  }
+}
+
+@mixin mobile-landscape {
+  @media(max-height: 600px) {
+    @content;
+  }
+}

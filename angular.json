@@ -48,6 +48,11 @@
             "styles": [
               "src/styles.scss"
             ],
+            "stylePreprocessorOptions": {
+              "includePaths": [
+                "src/app"
+              ]
+            },
             "scripts": [],
             "es5BrowserSupport": true
           },
