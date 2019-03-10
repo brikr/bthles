@@ -52,7 +52,7 @@ async function updateNextUrl() {
 
   if (meta === undefined) {
     // Fresh database. Set nextUrl to '0'
-    await db.doc('meta/meta').update({nextUrl: '0'});
+    await db.doc('meta/meta').set({nextUrl: '0'});
     return;
   }
 
