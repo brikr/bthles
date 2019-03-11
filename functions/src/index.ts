@@ -46,6 +46,7 @@ function base62Decode(str: string): number {
 // possible" will bump into someone's custom link, so we always just increment
 // until we find a free space. Chances are this will just increment once in
 // nearly all cases.
+// This function is idempotent.
 async function updateNextUrl() {
   // Get value of nextUrl
   const meta = (await db.doc('meta/meta').get()).data()! as Meta | undefined;
@@ -79,4 +80,34 @@ export const onLinkCreateIncrementNextUrl =
 export const callableIncrementNextUrl =
     functions.https.onCall(async (_data, _context) => {
       await updateNextUrl();
+    })
+
+// Increment the hit count for the given short link. If the hits field does not
+// exist on the link, it is created. If a v1Hits field exists on the link
+// (legacy hit count), then its value is added to the hits field and the v1Hits
+// field is deleted.
+// This function is NOT idempotent.
+async function incrementHitCount(short: string) {
+  const docRef = db.collection('links').doc(short);
+  await db.runTransaction(async transaction => {
+    const doc = await transaction.get(docRef);
+    if (doc.exists) {
+      const v1Hits: number|undefined = doc.get('v1Hits');
+      let hits: number = doc.get('hits') || 0;
+
+      if (v1Hits !== undefined) {
+        hits += v1Hits;
+        transaction.update(
+            docRef, {v1Hits: admin.firestore.FieldValue.delete()});
+      }
+
+      hits++;
+      transaction.update(docRef, {hits: hits});
+    }
+  });
+}
+
+export const callableIncrementHitCount =
+    functions.https.onCall(async (data: string, _context) => {
+      await incrementHitCount(data);
     })
