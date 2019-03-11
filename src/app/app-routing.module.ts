@@ -3,11 +3,19 @@ import {RouterModule, Routes} from '@angular/router';
 
 import {LinkContentComponent} from '@bthles/link-content/link-content.component';
 import {ShortenerComponent} from '@bthles/shortener/shortener.component';
+import {FooterComponent} from './footer/footer.component';
 
 const routes: Routes = [
   {
     path: '',
+    pathMatch: 'full',
     component: ShortenerComponent,
+  },
+  {
+    path: '',
+    pathMatch: 'full',
+    component: FooterComponent,
+    outlet: 'footer',
   },
   {
     // It's important that this route is last so that the routes before it take
@@ -15,7 +23,7 @@ const routes: Routes = [
     // instead of being treated as links.
     path: ':short',
     component: LinkContentComponent,
-  }
+  },
 ];
 
 @NgModule({
