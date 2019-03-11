@@ -105,8 +105,8 @@ export class ShortenerComponent {
         // an onCreate hook, but in case it's slow or anything, we run it here
         // too. It's idempotent). Request server to increment
         const incrementNextUrl =
-            this.fns.httpsCallable('callableIncrementNextUrl');
-        await incrementNextUrl({}).toPromise();
+            this.fns.httpsCallable<void, void>('callableIncrementNextUrl');
+        await incrementNextUrl().toPromise();
       }
     });
   }
