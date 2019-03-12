@@ -1,6 +1,8 @@
 import {Injectable} from '@angular/core';
 import {AngularFireAuth} from '@angular/fire/auth';
-import {auth} from 'firebase/app';
+import {auth, User} from 'firebase/app';
+import {Observable} from 'rxjs';
+import {map} from 'rxjs/operators';
 
 @Injectable({providedIn: 'root'})
 export class AuthService {
@@ -24,5 +26,18 @@ export class AuthService {
       return '';
     }
     return user.uid;
+  }
+
+  getUser(): Observable<User|null> {
+    return this.afAuth.user;
+  }
+
+  getUnanonymousUser(): Observable<User|null> {
+    return this.afAuth.user.pipe(map((user: firebase.User|null) => {
+      if (user !== null && user.isAnonymous) {
+        return null;
+      }
+      return user;
+    }));
   }
 }

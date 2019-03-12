@@ -1,5 +1,7 @@
 import {Component} from '@angular/core';
 import {NavigationEnd, Router} from '@angular/router';
+import {User} from 'firebase';
+import {take} from 'rxjs/operators';
 
 import {AuthService} from './auth.service';
 
@@ -23,6 +25,11 @@ export class AppComponent {
       }
     });
 
-    authService.login();
+    authService.getUser().pipe(take(1)).subscribe((user: User|null) => {
+      // Login anonymously if we aren't already logged in
+      if (user === null) {
+        authService.login();
+      }
+    });
   }
 }

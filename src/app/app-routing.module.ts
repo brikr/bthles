@@ -4,12 +4,19 @@ import {RouterModule, Routes} from '@angular/router';
 import {LinkContentComponent} from '@bthles/link-content/link-content.component';
 import {ShortenerComponent} from '@bthles/shortener/shortener.component';
 import {FooterComponent} from './footer/footer.component';
+import {NavComponent} from './nav/nav.component';
 
 const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
     component: ShortenerComponent,
+  },
+  {
+    path: '',
+    pathMatch: 'full',
+    component: NavComponent,
+    outlet: 'nav',
   },
   {
     path: '',

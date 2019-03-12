@@ -18,6 +18,7 @@ import {environment} from '../environments/environment';
 
 import {UrlValidatorDirective} from './directives/url-validator.directive';
 import {FooterComponent} from './footer/footer.component';
+import {NavComponent} from './nav/nav.component';
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import {FooterComponent} from './footer/footer.component';
     LinkContentComponent,
     UrlValidatorDirective,
     FooterComponent,
+    NavComponent,
   ],
   imports: [
     AngularFireAuthModule,
