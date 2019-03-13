@@ -1,4 +1,13 @@
 <div class="root">
+  <div class="home-button">
+    <!-- 
+      routerLink="#" is a workaround to cause a page reload when you click the
+      home button.
+      TODO(brikr): Use a service or maybe Angular Router stuff to have the
+      ShortenerComponent reset itself when you navigate to / from /
+    -->
+    <button mat-button routerLink="#">bthl.es</button>
+  </div>
   <button mat-button routerLink="/pages/my-links">My links</button>
   <ng-container *ngIf="unanonymousUser$ | async as unanonymousUser; else loginButton">
     <mat-spinner *ngIf="logoutPending; else logoutButton" diameter="24"></mat-spinner>

@@ -1,15 +1,16 @@
 .root {
   height: 50px;
+  margin: 0 7px;
 
   display: flex;
   justify-content: flex-end;
   align-items: center;
 }
 
-button {
-  margin-right: 7px;
+.home-button {
+  flex-grow: 1;
 }
 
 mat-spinner {
-  margin-right: 13px;
+  margin-right: 6px;
 }
