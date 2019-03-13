@@ -9,13 +9,13 @@ import {Observable} from 'rxjs';
   styleUrls: ['./nav.component.scss']
 })
 export class NavComponent {
-  unanonymousUser: Observable<User|null>;
+  unanonymousUser$: Observable<User|null>;
   logoutPending = false;
 
   constructor(
       readonly authService: AuthService,
   ) {
-    this.unanonymousUser = authService.getUnanonymousUser();
+    this.unanonymousUser$ = authService.getUnanonymousUser();
   }
 
   async login() {

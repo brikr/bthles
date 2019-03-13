@@ -1,10 +1,10 @@
 <div class="root">
-  <button mat-button>My links</button>
-  <ng-container *ngIf="unanonymousUser | async as user; else loginButton">
+  <button mat-button routerLink="/pages/my-links">My links</button>
+  <ng-container *ngIf="unanonymousUser$ | async as unanonymousUser; else loginButton">
     <mat-spinner *ngIf="logoutPending; else logoutButton" diameter="24"></mat-spinner>
     <ng-template #logoutButton>
       <button mat-button (click)="logout()">
-        Log out of {{ user.displayName }}
+        Log out of {{ unanonymousUser.displayName }}
       </button>
     </ng-template>
   </ng-container>
