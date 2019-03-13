@@ -1,0 +1,14 @@
+.root {
+  display: flex;
+  justify-content: center;
+}
+
+mat-list {
+  width: 100%;
+  max-width: 600px;
+}
+
+.to-line {
+  display: flex;
+  align-items: center;
+}

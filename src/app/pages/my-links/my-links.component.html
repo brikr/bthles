@@ -1,0 +1,18 @@
+<div class="root">
+  <mat-list *ngIf="links$ | async as links">
+    <ng-container *ngFor="let link of links; let isFirst = first">
+      <mat-divider *ngIf="!isFirst"></mat-divider>
+      <mat-list-item>
+        <h4 matLine>{{ link.content }}</h4>
+        <div matLine>
+          <div class="to-line">
+            <mat-icon>link</mat-icon>
+            <span>{{ baseUrl }}/{{ link.short }}</span>
+          </div>
+        </div>
+        <p matLine>Hits: {{ link.hits || 0 }}</p>
+        <mat-icon>delete</mat-icon>
+      </mat-list-item>
+    </ng-container>
+  </mat-list>
+</div>

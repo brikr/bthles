@@ -19,6 +19,8 @@ import {environment} from '../environments/environment';
 import {UrlValidatorDirective} from './directives/url-validator.directive';
 import {FooterComponent} from './footer/footer.component';
 import {NavComponent} from './nav/nav.component';
+import { MyLinksComponent } from './pages/my-links/my-links.component';
+import { DefaultLayoutComponent } from './default-layout/default-layout.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +30,8 @@ import {NavComponent} from './nav/nav.component';
     UrlValidatorDirective,
     FooterComponent,
     NavComponent,
+    MyLinksComponent,
+    DefaultLayoutComponent,
   ],
   imports: [
     AngularFireAuthModule,
