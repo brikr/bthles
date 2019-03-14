@@ -6,7 +6,7 @@
       TODO(brikr): Use a service or maybe Angular Router stuff to have the
       ShortenerComponent reset itself when you navigate to / from /
     -->
-    <button mat-button routerLink="#">bthl.es</button>
+    <button mat-button routerLink="/">bthl.es</button>
   </div>
   <button mat-button routerLink="/pages/my-links">My links</button>
   <ng-container *ngIf="unanonymousUser$ | async as unanonymousUser; else loginButton">

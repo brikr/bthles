@@ -2,6 +2,7 @@ import {animate, style, transition, trigger} from '@angular/animations';
 import {Component} from '@angular/core';
 import {AngularFirestore} from '@angular/fire/firestore';
 import {AngularFireFunctions} from '@angular/fire/functions';
+import {Event, NavigationStart, Router} from '@angular/router';
 import {environment} from '@bthles-environment/environment';
 import {Meta} from '@bthles-types/types';
 import {AuthService} from '@bthles/services/auth.service';
@@ -55,7 +56,20 @@ export class ShortenerComponent {
       private readonly fns: AngularFireFunctions,
       private readonly authService: AuthService,
       private readonly analytics: GoogleAnalyticsService,
-  ) {}
+      router: Router,
+  ) {
+    router.events.subscribe((e: Event) => {
+      if (e instanceof NavigationStart && e.url === '/') {
+        this.init();
+      }
+    });
+  }
+
+  init() {
+    this.content = '';
+    this.state = ShortenerState.START;
+    this.shortUrl = '';
+  }
 
   // TODO(brikr): this workflow should be moved to a service
   async shorten() {
