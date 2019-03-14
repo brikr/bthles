@@ -5,8 +5,8 @@ import {AngularFireFunctions} from '@angular/fire/functions';
 import {MatSnackBar} from '@angular/material';
 import {environment} from '@bthles-environment/environment';
 import {Meta} from '@bthles-types/types';
-import {AuthService} from '@bthles/auth.service';
-import {GoogleAnalyticsService} from '@bthles/google-analytics.service';
+import {AuthService} from '@bthles/services/auth.service';
+import {GoogleAnalyticsService} from '@bthles/services/google-analytics.service';
 import {interval, ReplaySubject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 

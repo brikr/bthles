@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {NavigationEnd, Router} from '@angular/router';
-import {AuthService} from '@bthles/auth.service';
+import {AuthService} from '@bthles/services/auth.service';
 import {User} from 'firebase';
 import {take} from 'rxjs/operators';
 

@@ -2,7 +2,7 @@ import {Component} from '@angular/core';
 import {AngularFirestore, DocumentChangeAction} from '@angular/fire/firestore';
 import {environment} from '@bthles-environment/environment';
 import {Link} from '@bthles-types/types';
-import {AuthService} from '@bthles/auth.service';
+import {AuthService} from '@bthles/services/auth.service';
 import {User} from 'firebase';
 import {Observable, of} from 'rxjs';
 import {flatMap, map} from 'rxjs/operators';

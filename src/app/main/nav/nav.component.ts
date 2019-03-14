@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {AuthService} from '@bthles/auth.service';
+import {AuthService} from '@bthles/services/auth.service';
 import {User} from 'firebase';
 import {Observable} from 'rxjs';
 
