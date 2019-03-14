@@ -9,6 +9,7 @@ import {BrowserModule} from '@angular/platform-browser';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {AppRoutingModule} from '@bthles/app-routing.module';
 import {AppComponent} from '@bthles/app.component';
+import {CopyAndNotifyDirective} from '@bthles/directives/copy-and-notify.directive';
 import {UrlValidatorDirective} from '@bthles/directives/url-validator.directive';
 import {LinkContentComponent} from '@bthles/link-content/link-content.component';
 import {FooterComponent} from '@bthles/main/footer/footer.component';
@@ -31,6 +32,7 @@ import {environment} from '../environments/environment';
     NavComponent,
     MyLinksComponent,
     MainComponent,
+    CopyAndNotifyDirective,
   ],
   imports: [
     AngularFireAuthModule,

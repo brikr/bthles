@@ -2,7 +2,6 @@ import {animate, style, transition, trigger} from '@angular/animations';
 import {Component} from '@angular/core';
 import {AngularFirestore} from '@angular/fire/firestore';
 import {AngularFireFunctions} from '@angular/fire/functions';
-import {MatSnackBar} from '@angular/material';
 import {environment} from '@bthles-environment/environment';
 import {Meta} from '@bthles-types/types';
 import {AuthService} from '@bthles/services/auth.service';
@@ -55,7 +54,6 @@ export class ShortenerComponent {
       private readonly db: AngularFirestore,
       private readonly fns: AngularFireFunctions,
       private readonly authService: AuthService,
-      private readonly snackBar: MatSnackBar,
       private readonly analytics: GoogleAnalyticsService,
   ) {}
 
@@ -109,10 +107,6 @@ export class ShortenerComponent {
         await incrementNextUrl().toPromise();
       }
     });
-  }
-
-  showCopiedSnackBar() {
-    this.snackBar.open('Copied to clipboard', undefined, {duration: 1000});
   }
 }
 

@@ -3,15 +3,18 @@
     <ng-container *ngFor="let link of links; let isFirst = first">
       <mat-divider *ngIf="!isFirst"></mat-divider>
       <mat-list-item>
-        <h4 matLine>{{ link.content }}</h4>
-        <div matLine>
-          <div class="to-line">
-            <mat-icon>link</mat-icon>
-            <span>{{ baseUrl }}/{{ link.short }}</span>
-          </div>
-        </div>
+        <h4 matLine>{{ baseUrl }}/{{ link.short }}</h4>
+        <p matLine>{{ link.content }}</p>
         <p matLine>Hits: {{ link.hits || 0 }}</p>
-        <mat-icon>delete</mat-icon>
+        <button mat-icon-button matTooltip="Copy to clipboard" [copyAndNotify]="baseUrl + '/' + link.short">
+          <mat-icon>link</mat-icon>
+        </button>
+        <button mat-icon-button matTooltip="Disable link">
+          <mat-icon>block</mat-icon>
+        </button>
+        <button mat-icon-button matTooltip="Delete link">
+          <mat-icon>delete</mat-icon>
+        </button>
       </mat-list-item>
     </ng-container>
   </mat-list>
