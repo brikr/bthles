@@ -1,15 +1,14 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {LinkContentComponent} from '@bthles/link-content/link-content.component';
-import {ShortenerComponent} from '@bthles/shortener/shortener.component';
-
-import {DefaultLayoutComponent} from './default-layout/default-layout.component';
-import {MyLinksComponent} from './pages/my-links/my-links.component';
+import {MainComponent} from '@bthles/main/main.component';
+import {MyLinksComponent} from '@bthles/main/pages/my-links/my-links.component';
+import {ShortenerComponent} from '@bthles/main/shortener/shortener.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: DefaultLayoutComponent,
+    component: MainComponent,
     children: [
       {
         path: '',

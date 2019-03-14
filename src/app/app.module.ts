@@ -9,18 +9,17 @@ import {BrowserModule} from '@angular/platform-browser';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {AppRoutingModule} from '@bthles/app-routing.module';
 import {AppComponent} from '@bthles/app.component';
+import {UrlValidatorDirective} from '@bthles/directives/url-validator.directive';
 import {LinkContentComponent} from '@bthles/link-content/link-content.component';
+import {FooterComponent} from '@bthles/main/footer/footer.component';
+import {MainComponent} from '@bthles/main/main.component';
+import {NavComponent} from '@bthles/main/nav/nav.component';
+import {MyLinksComponent} from '@bthles/main/pages/my-links/my-links.component';
+import {ShortenerComponent} from '@bthles/main/shortener/shortener.component';
 import {MaterialModule} from '@bthles/material.module';
-import {ShortenerComponent} from '@bthles/shortener/shortener.component';
 import {ClipboardModule} from 'ngx-clipboard';
 
 import {environment} from '../environments/environment';
-
-import {UrlValidatorDirective} from './directives/url-validator.directive';
-import {FooterComponent} from './footer/footer.component';
-import {NavComponent} from './nav/nav.component';
-import { MyLinksComponent } from './pages/my-links/my-links.component';
-import { DefaultLayoutComponent } from './default-layout/default-layout.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +30,7 @@ import { DefaultLayoutComponent } from './default-layout/default-layout.componen
     FooterComponent,
     NavComponent,
     MyLinksComponent,
-    DefaultLayoutComponent,
+    MainComponent,
   ],
   imports: [
     AngularFireAuthModule,
