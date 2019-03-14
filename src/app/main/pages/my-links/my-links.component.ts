@@ -15,6 +15,7 @@ import {flatMap, map} from 'rxjs/operators';
 export class MyLinksComponent {
   links$: Observable<LinkWithShort[]>;
   baseUrl: string;
+  isAnonymous = false;
 
   constructor(
       afs: AngularFirestore,
@@ -25,6 +26,7 @@ export class MyLinksComponent {
           if (user === null) {
             return of([]);
           }
+          this.isAnonymous = user.isAnonymous;
           return afs
               .collection<Link>(
                   'links', ref => ref.where('owner', '==', user.uid))
