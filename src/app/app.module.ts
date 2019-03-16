@@ -7,6 +7,7 @@ import {FlexLayoutModule} from '@angular/flex-layout';
 import {FormsModule} from '@angular/forms';
 import {BrowserModule} from '@angular/platform-browser';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {environment} from '@bthles-environment/environment';
 import {AppRoutingModule} from '@bthles/app-routing.module';
 import {AppComponent} from '@bthles/app.component';
 import {CopyAndNotifyDirective} from '@bthles/directives/copy-and-notify.directive';
@@ -19,8 +20,6 @@ import {MyLinksComponent} from '@bthles/main/pages/my-links/my-links.component';
 import {ShortenerComponent} from '@bthles/main/shortener/shortener.component';
 import {MaterialModule} from '@bthles/material.module';
 import {ClipboardModule} from 'ngx-clipboard';
-
-import {environment} from '../environments/environment';
 
 @NgModule({
   declarations: [
