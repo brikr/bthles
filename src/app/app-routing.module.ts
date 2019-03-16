@@ -33,6 +33,8 @@ const routes: Routes = [
     component: LinkContentComponent,
   },
   {
+    // This captures strange unknown paths that involve slashes (e.g.
+    // 0/something)
     path: '**',
     redirectTo: '',
   },
