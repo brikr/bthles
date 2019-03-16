@@ -27,4 +27,9 @@ export interface Link {
   content: string;
   // The creator of the link.
   owner: string;
+  // The number of times the link has been clicked
+  hits?: number;
+  // The legacy hit count from v1. This value is converted to `hits` the first
+  // time a link is clicked.
+  v1Hits?: number;
 }
