@@ -1,5 +1,6 @@
 import * as admin from 'firebase-admin';
 import * as functions from 'firebase-functions';
+import {CallableContext} from 'firebase-functions/lib/providers/https';
 
 import {Meta} from './types';
 
@@ -13,8 +14,11 @@ const db = admin.firestore();
 // incremented). What matters is that the URLs will make use of all combinations
 // of [0-9A-Za-z]+
 const b62 = [
+  // tslint:disable-next-line:ban
   ...[...Array(10)].map((_, i) => String.fromCharCode('0'.charCodeAt(0) + i)),
+  // tslint:disable-next-line:ban
   ...[...Array(26)].map((_, i) => String.fromCharCode('A'.charCodeAt(0) + i)),
+  // tslint:disable-next-line:ban
   ...[...Array(26)].map((_, i) => String.fromCharCode('a'.charCodeAt(0) + i)),
 ];
 
@@ -57,7 +61,7 @@ async function updateNextUrl() {
     return;
   }
 
-  let nextUrl = meta.nextUrl
+  let nextUrl = meta.nextUrl;
 
   // Check if nextUrl is taken
   let exists = (await db.collection('links').doc(nextUrl).get()).exists;
@@ -68,7 +72,7 @@ async function updateNextUrl() {
   }
 
   // Update db with new nextUrl
-  await db.doc('meta/meta').update({nextUrl: nextUrl});
+  await db.doc('meta/meta').update({nextUrl});
 }
 
 export const onLinkCreateIncrementNextUrl =
@@ -80,7 +84,7 @@ export const onLinkCreateIncrementNextUrl =
 export const callableIncrementNextUrl =
     functions.https.onCall(async (_data, _context) => {
       await updateNextUrl();
-    })
+    });
 
 // Increment the hit count for the given short link. If the hits field does not
 // exist on the link, it is created. If a v1Hits field exists on the link
@@ -102,7 +106,7 @@ async function incrementHitCount(short: string) {
       }
 
       hits++;
-      transaction.update(docRef, {hits: hits});
+      transaction.update(docRef, {hits});
     }
   });
 }
@@ -110,4 +114,5 @@ async function incrementHitCount(short: string) {
 export const callableIncrementHitCount =
     functions.https.onCall(async (data: string, _context) => {
       await incrementHitCount(data);
-    })
+    });
+
