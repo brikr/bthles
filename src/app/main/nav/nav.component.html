@@ -13,11 +13,11 @@
     <mat-spinner *ngIf="logoutPending; else logoutButton" diameter="24"></mat-spinner>
     <ng-template #logoutButton>
       <button mat-button (click)="logout()">
-        Log out of {{ unanonymousUser.displayName }}
+        Sign out of {{ unanonymousUser.displayName }}
       </button>
     </ng-template>
   </ng-container>
   <ng-template #loginButton>
-    <button mat-button (click)="login()">Login</button>
+    <button mat-button (click)="login()">Sign in with Google</button>
   </ng-template>
 </div>
