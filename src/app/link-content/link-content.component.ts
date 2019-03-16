@@ -24,7 +24,7 @@ export class LinkContentComponent {
           (await db.collection('links').doc<Link>(short).ref.get());
       const dest = snapshot.data() as Link | undefined;
 
-      if (dest !== undefined) {
+      if (dest !== undefined && dest.content !== undefined) {
         const incrementHitCount =
             fns.httpsCallable<string, void>('callableIncrementHitCount');
         incrementHitCount(short);

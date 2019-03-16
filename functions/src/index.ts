@@ -116,3 +116,21 @@ export const callableIncrementHitCount =
       await incrementHitCount(data);
     });
 
+// Delete the given link. The content field is erased (intentionally
+// unrecoverable), but the owner and hit count remain.
+async function deleteLink(short: string) {
+  await db.collection('links').doc(short).update(
+      {content: admin.firestore.FieldValue.delete()});
+}
+
+export const callableDeleteLink =
+    functions.https.onCall(async (data: string, context: CallableContext) => {
+      if (context.auth === undefined) {
+        return;
+      }
+      const doc = await db.collection('links').doc(data).get();
+      if (doc.exists && doc.get('owner') === context.auth.uid) {
+        // Can only delete your own link
+        await deleteLink(data);
+      }
+    });

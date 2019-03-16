@@ -4,14 +4,22 @@
   flex-direction: column;
 }
 
-mat-list {
+mat-list, mat-expansion-panel {
   width: 100%;
   max-width: 600px;
 }
 
-.anonymous-warning {
+mat-expansion-panel {
+  margin-top: 50px;
+}
+
+.tip {
   max-width: 568px;
 
   font-size: 14px;
   font-style: italic;
+}
+
+.delete-spinner {
+  margin: 0 10px;
 }

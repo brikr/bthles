@@ -24,7 +24,7 @@ export interface Link {
   // redirects to the URL at `content`.
   type: 'link';
   // Content of the link. For type 'link', this is a URL.
-  content: string;
+  content?: string;
   // The creator of the link.
   owner: string;
   // The number of times the link has been clicked

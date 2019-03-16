@@ -1,25 +1,50 @@
 <div class="root">
-  <p class="anonymous-warning" *ngIf="isAnonymous">
+  <p class="tip" *ngIf="isAnonymous">
     You are not signed in. Below are the links you have recently created, but they might not always be accessible here.
     Sign in to claim your links and be able to manage them permanently.
   </p>
-  <mat-list *ngIf="links$ | async as links">
-    <ng-container *ngFor="let link of links; let isFirst = first">
-      <mat-divider *ngIf="!isFirst"></mat-divider>
-      <mat-list-item>
-        <h4 matLine>{{ baseUrl }}/{{ link.short }}</h4>
-        <p matLine>{{ link.content }}</p>
-        <p matLine>Hits: {{ link.hits || 0 }}</p>
-        <button mat-icon-button matTooltip="Copy to clipboard" [copyAndNotify]="baseUrl + '/' + link.short">
-          <mat-icon>link</mat-icon>
-        </button>
-        <!-- <button mat-icon-button matTooltip="Disable link">
-          <mat-icon>block</mat-icon>
-        </button>
-        <button mat-icon-button matTooltip="Delete link">
-          <mat-icon>delete</mat-icon>
-        </button> -->
-      </mat-list-item>
-    </ng-container>
-  </mat-list>
+  <ng-container *ngIf="links$ | async as links">
+    <mat-list *ngIf="links.length > 0; else noLinks">
+      <ng-container *ngFor="let link of links; let isFirst = first">
+        <mat-divider *ngIf="!isFirst"></mat-divider>
+        <mat-list-item>
+          <h4 matLine>{{ baseUrl }}/{{ link.short }}</h4>
+          <p matLine>{{ link.content }}</p>
+          <p matLine>Hits: {{ link.hits || 0 }}</p>
+          <ng-container *ngIf="link.content">
+            <button mat-icon-button matTooltip="Copy to clipboard" [copyAndNotify]="baseUrl + '/' + link.short">
+              <mat-icon>link</mat-icon>
+            </button>
+            <ng-container *ngIf="link.deleting; else deleteButton">
+              <mat-spinner class="delete-spinner" diameter="24"></mat-spinner>
+            </ng-container>
+            <ng-template #deleteButton>
+              <button mat-icon-button matTooltip="Delete link (this cannot be undone)" (click)="deleteLink(link)">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </ng-template>
+          </ng-container>
+        </mat-list-item>
+      </ng-container>
+    </mat-list>
+    <ng-template #noLinks>
+      <p class="tip">
+        You have no active links.
+      </p>
+    </ng-template>
+  </ng-container>
+  <ng-container *ngIf="deletedLinks$ | async as deletedLinks">
+    <mat-expansion-panel *ngIf="deletedLinks.length > 0">
+      <mat-expansion-panel-header>
+        <mat-panel-title>Deleted links</mat-panel-title>
+      </mat-expansion-panel-header>
+      <mat-list *ngFor="let link of deletedLinks; let isFirst = first">
+        <mat-divider *ngIf="!isFirst"></mat-divider>
+        <mat-list-item>
+          <h4 matLine>{{ baseUrl }}/{{ link.short }}</h4>
+          <p matLine>Hits: {{ link.hits || 0 }}</p>
+        </mat-list-item>
+      </mat-list>
+    </mat-expansion-panel>
+  </ng-container>
 </div>
