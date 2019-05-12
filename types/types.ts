@@ -33,3 +33,12 @@ export interface Link {
   // time a link is clicked.
   v1Hits?: number;
 }
+
+// LinkClaimData is used when updating all anonymous links to be owned by a
+// signed-in user.
+export interface LinkClaimData {
+  // The anonymous user's uid whose links we are claiming.
+  fromUser: string;
+  // The new uid to own the links.
+  toUser: string;
+}

@@ -1,8 +1,9 @@
+import {QueryDocumentSnapshot} from '@google-cloud/firestore';
 import * as admin from 'firebase-admin';
 import * as functions from 'firebase-functions';
 import {CallableContext} from 'firebase-functions/lib/providers/https';
 
-import {Meta} from './types';
+import {LinkClaimData, Meta} from './types';
 
 admin.initializeApp();
 const db = admin.firestore();
@@ -133,4 +134,26 @@ export const callableDeleteLink =
         // Can only delete your own link
         await deleteLink(data);
       }
+    });
+
+// Change the owner of all links owned by fromUser to be owned by toUser. This
+// allows users to take ownership of their anonymously-created links once they
+// sign in. fromUser must be an anonymous user.
+async function claimLinks(data: LinkClaimData) {
+  // Verify that fromUser is an anonymous user.
+  const from = await admin.auth().getUser(data.fromUser);
+  if (from.providerData.length > 0) {
+    return;
+  }
+
+  const snapshot =
+      await db.collection('links').where('owner', '==', data.fromUser).get();
+  snapshot.forEach((doc: QueryDocumentSnapshot) => {
+    doc.ref.update({owner: data.toUser});
+  });
+}
+
+export const callableClaimLinks = functions.https.onCall(
+    async (data: LinkClaimData, _context: CallableContext) => {
+      await claimLinks(data);
     });

@@ -1,4 +1,6 @@
 import {Component} from '@angular/core';
+import {AngularFireFunctions} from '@angular/fire/functions';
+import {LinkClaimData} from '@bthles-types/types';
 import {AuthService} from '@bthles/services/auth.service';
 import {User} from 'firebase';
 import {Observable} from 'rxjs';
@@ -14,12 +16,21 @@ export class NavComponent {
 
   constructor(
       readonly authService: AuthService,
+      private readonly fns: AngularFireFunctions,
   ) {
     this.unanonymousUser$ = authService.getUnanonymousUser();
   }
 
   async login() {
+    const fromUser = this.authService.getUid();
     await this.authService.login('GOOGLE');
+    const data = {
+      fromUser,
+      toUser: this.authService.getUid(),
+    };
+    const remoteClaimLinks =
+        this.fns.httpsCallable<LinkClaimData, void>('callableClaimLinks');
+    await remoteClaimLinks(data).toPromise();
   }
 
   async logout() {
