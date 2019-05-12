@@ -1,12 +1,14 @@
 import {animate, style, transition, trigger} from '@angular/animations';
-import {Component} from '@angular/core';
+import {Component, OnDestroy} from '@angular/core';
 import {AngularFirestore} from '@angular/fire/firestore';
 import {AngularFireFunctions} from '@angular/fire/functions';
+import {MatSnackBar} from '@angular/material';
 import {Event, NavigationStart, Router} from '@angular/router';
 import {environment} from '@bthles-environment/environment';
 import {Meta} from '@bthles-types/types';
 import {AuthService} from '@bthles/services/auth.service';
 import {GoogleAnalyticsService} from '@bthles/services/google-analytics.service';
+import {User} from 'firebase';
 import {interval, ReplaySubject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 
@@ -43,7 +45,7 @@ import {takeUntil} from 'rxjs/operators';
         ]),
   ],
 })
-export class ShortenerComponent {
+export class ShortenerComponent implements OnDestroy {
   content = '';
   state = ShortenerState.START;
   shortUrl = '';
@@ -51,11 +53,14 @@ export class ShortenerComponent {
   // give template access to some items
   ShortenerState = ShortenerState;
 
+  private readonly destroyed = new ReplaySubject<void>();
+
   constructor(
       private readonly db: AngularFirestore,
       private readonly fns: AngularFireFunctions,
       private readonly authService: AuthService,
       private readonly analytics: GoogleAnalyticsService,
+      private readonly snackbar: MatSnackBar,
       router: Router,
   ) {
     router.events.subscribe((e: Event) => {
@@ -110,6 +115,17 @@ export class ShortenerComponent {
         success.next();
         this.state = ShortenerState.LINK_RECEIVED;
         this.shortUrl = `${environment.baseUrl}/${meta.nextUrl}`;
+
+        // Show login tip if user isn't logged in
+        this.authService.getUnanonymousUser()
+            .pipe(takeUntil(this.destroyed))
+            .subscribe((u: User|null) => {
+              if (u === null) {
+                this.snackbar.open(
+                    'Tip: You can sign in to take ownership of the links you create, which allows you to view their hit count and delete them.',
+                    'OK');
+              }
+            });
       } catch {
         // We get an error if we didn't have permissions to create the record,
         // likely meaning it already exists. In this case, we request that the
@@ -121,6 +137,10 @@ export class ShortenerComponent {
         await incrementNextUrl().toPromise();
       }
     });
+  }
+
+  ngOnDestroy() {
+    this.destroyed.next();
   }
 }
 
