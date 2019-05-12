@@ -1,23 +1,25 @@
-import {Component} from '@angular/core';
+import {Component, OnDestroy} from '@angular/core';
 import {AngularFirestore, DocumentChangeAction} from '@angular/fire/firestore';
 import {AngularFireFunctions} from '@angular/fire/functions';
 import {environment} from '@bthles-environment/environment';
 import {Link} from '@bthles-types/types';
 import {AuthService} from '@bthles/services/auth.service';
 import {User} from 'firebase';
-import {Observable, of} from 'rxjs';
-import {filter, flatMap, map, partition} from 'rxjs/operators';
+import {Observable, of, ReplaySubject} from 'rxjs';
+import {filter, flatMap, map, partition, takeUntil} from 'rxjs/operators';
 
 @Component({
   selector: 'bthles-my-links',
   templateUrl: './my-links.component.html',
   styleUrls: ['./my-links.component.scss']
 })
-export class MyLinksComponent {
+export class MyLinksComponent implements OnDestroy {
   links$: Observable<LinkWithExtra[]>;
   deletedLinks$: Observable<LinkWithExtra[]>;
   baseUrl: string;
   isAnonymous = false;
+
+  private destroyed = new ReplaySubject<void>();
 
   constructor(
       afs: AngularFirestore,
@@ -25,6 +27,7 @@ export class MyLinksComponent {
       authService: AuthService,
   ) {
     const allLinks$ = authService.getUser().pipe(
+        takeUntil(this.destroyed),
         flatMap((user: User|null) => {
           if (user === null) {
             return of([]);
@@ -48,12 +51,18 @@ export class MyLinksComponent {
         }),
     );
 
-    this.links$ = allLinks$.pipe(map((links: LinkWithExtra[]) => {
-      return links.filter((link: LinkWithExtra) => link.content !== undefined);
-    }));
-    this.deletedLinks$ = allLinks$.pipe(map((links: LinkWithExtra[]) => {
-      return links.filter((link: LinkWithExtra) => link.content === undefined);
-    }));
+    this.links$ = allLinks$.pipe(
+        takeUntil(this.destroyed),
+        map((links: LinkWithExtra[]) => {
+          return links.filter((link: LinkWithExtra) => link.content);
+        }),
+    );
+    this.deletedLinks$ = allLinks$.pipe(
+        takeUntil(this.destroyed),
+        map((links: LinkWithExtra[]) => {
+          return links.filter((link: LinkWithExtra) => !link.content);
+        }),
+    );
 
     this.baseUrl = environment.baseUrl;
   }
@@ -64,9 +73,15 @@ export class MyLinksComponent {
         this.fns.httpsCallable<string, void>('callableDeleteLink');
     // Using async/await here makes it so Angular doesn't run change detection
     // until the whole function is done, and the spinner will never appear.
-    remoteDeleteLink(link.short).subscribe(() => {
-      link.deleting = false;
-    });
+    remoteDeleteLink(link.short)
+        .pipe(takeUntil(this.destroyed))
+        .subscribe(() => {
+          link.deleting = false;
+        });
+  }
+
+  ngOnDestroy() {
+    this.destroyed.next();
   }
 }
 
