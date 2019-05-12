@@ -68,6 +68,11 @@ export class MyLinksComponent implements OnDestroy {
   }
 
   deleteLink(link: LinkWithExtra) {
+    const confirmDelete = confirm(`Are you sure you want to delete ${
+        this.baseUrl}/${link.short}? This cannot be undone.`);
+    if (!confirmDelete) {
+      return;
+    }
     link.deleting = true;
     const remoteDeleteLink =
         this.fns.httpsCallable<string, void>('callableDeleteLink');
