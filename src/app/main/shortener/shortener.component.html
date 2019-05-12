@@ -10,7 +10,7 @@
       <button mat-flat-button color="primary" type="submit" [disabled]="!form.valid">Shorten</button>
     </form>
 
-    <div *ngSwitchCase="ShortenerState.AWAITING_RESPONSE" class="spinner" @appearDisappear>
+    <div *ngSwitchCase="ShortenerState.AWAITING_RESPONSE" class="progress" @appearDisappear>
       <mat-progress-bar mode="indeterminate"></mat-progress-bar>
     </div>
 
