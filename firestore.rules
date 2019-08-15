@@ -10,7 +10,7 @@ service cloud.firestore {
     }
 
     match /links/{document=**} {
-      allow read: if authed();
+      allow read: if true;
       allow create: if authed() && ownerMatchesUserId();
     }
   }
