@@ -17,17 +17,6 @@ export class GoogleAnalyticsService {
     }
     ga('send', 'event', event);
   }
-
-  // Sends an exception to Google Analytics
-  sendException(exception: GoogleAnalyticsException) {
-    if (exception.exDescription === undefined) {
-      exception.exDescription = null;
-    }
-    if (exception.exFatal === undefined) {
-      exception.exFatal = null;
-    }
-    ga('send', 'exception', exception);
-  }
 }
 
 export interface GoogleAnalyticsEvent {
@@ -35,9 +24,4 @@ export interface GoogleAnalyticsEvent {
   eventAction: string;
   eventLabel?: string|null;
   eventValue?: number|null;
-}
-
-export interface GoogleAnalyticsException {
-  exDescription?: string|null;
-  exFatal?: boolean|null;
 }
