@@ -3,7 +3,6 @@ import {AngularFireModule} from '@angular/fire';
 import {AngularFireAuthModule} from '@angular/fire/auth';
 import {AngularFirestoreModule} from '@angular/fire/firestore';
 import {AngularFireFunctionsModule} from '@angular/fire/functions';
-import {FlexLayoutModule} from '@angular/flex-layout';
 import {FormsModule} from '@angular/forms';
 import {BrowserModule} from '@angular/platform-browser';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -43,7 +42,6 @@ import {ClipboardModule} from 'ngx-clipboard';
     BrowserAnimationsModule,
     BrowserModule,
     ClipboardModule,
-    FlexLayoutModule,
     FormsModule,
     MaterialModule,
   ],
