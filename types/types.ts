@@ -1,5 +1,7 @@
 // Types used in Firestore that are referenced by both Angular and Firestore
 // functions
+// This file is duplicated at bthles/functions/src/types.ts. Make sure to copy
+// changes over.
 
 // Bthles is the entire Firestore database
 export interface Bthles {
