@@ -12,7 +12,7 @@ import {AppRoutingModule} from '@bthles/app-routing.module';
 import {AppComponent} from '@bthles/app.component';
 import {CopyAndNotifyDirective} from '@bthles/directives/copy-and-notify.directive';
 import {UrlValidatorDirective} from '@bthles/directives/url-validator.directive';
-import {GlobalErrorHandler} from '@bthles/global-error-handler';
+import {GlobalErrorHandler, rollbarFactory, RollbarService} from '@bthles/global-error-handler';
 import {LinkContentComponent} from '@bthles/link-content/link-content.component';
 import {FooterComponent} from '@bthles/main/footer/footer.component';
 import {MainComponent} from '@bthles/main/main.component';
@@ -49,6 +49,7 @@ import {ClipboardModule} from 'ngx-clipboard';
   ],
   providers: [
     {provide: ErrorHandler, useClass: GlobalErrorHandler},
+    {provide: RollbarService, useFactory: rollbarFactory},
   ],
   bootstrap: [
     AppComponent,

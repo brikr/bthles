@@ -1,22 +1,35 @@
-import {ErrorHandler, Inject, Injector} from '@angular/core';
+import {ErrorHandler, Inject, InjectionToken} from '@angular/core';
 import {MatSnackBar} from '@angular/material';
-import {GoogleAnalyticsService} from '@bthles/services/google-analytics.service';
+import {environment} from '@bthles-environment/environment';
+import * as Rollbar from 'rollbar';
+
+interface Exception {
+  originalError?: string;
+}
+
+const rollbarConfig = {
+  accessToken: 'dc562dc5cd1846998adf789d573491f3',
+  captureUncaught: false,
+  captureUnhandledRejections: true,
+  environment: environment.baseUrl,
+};
+
+// tslint:disable-next-line:variable-name
+export const RollbarService = new InjectionToken<Rollbar>('rollbar');
+
+export function rollbarFactory(): Rollbar {
+  return new Rollbar(rollbarConfig);
+}
 
 export class GlobalErrorHandler implements ErrorHandler {
-  private readonly analytics: GoogleAnalyticsService;
-  private readonly snackBar: MatSnackBar;
-
-  constructor(@Inject(Injector) injector: Injector) {
-    this.analytics = injector.get(GoogleAnalyticsService);
-    this.snackBar = injector.get(MatSnackBar);
-  }
+  constructor(
+      @Inject(RollbarService) private readonly rollbar: Rollbar,
+      @Inject(MatSnackBar) private readonly snackBar: MatSnackBar,
+  ) {}
 
   handleError(error: Exception) {
-    // Log the first line of the rejection message to GA
-    this.analytics.sendException({
-      exDescription: error.rejection.toString().split('\n')[0],
-      exFatal: true,
-    });
+    // Log the error to Rollbar
+    this.rollbar.error(error.originalError || error);
 
     // Show snackbar requesting refresh
     this.snackBar.open('An error has occured. Try reloading the page.');
@@ -24,8 +37,4 @@ export class GlobalErrorHandler implements ErrorHandler {
     // Re-throw the original error
     throw error;
   }
-}
-
-interface Exception {
-  rejection: {toString(): string;};
 }
