@@ -14,7 +14,14 @@
     "fix": "gts fix",
     "prepare": "npm run compile",
     "pretest": "npm run compile",
-    "posttest": "npm run check"
+    "posttest": "npm run check",
+    "update": "npm i",
+    "update-functions": "cd functions && npm i && cd -",
+    "update-all": "npm run update && npm run update-functions",
+    "build-functions": "cd functions && npm run build && cd -",
+    "deploy": "npm run deploy-staging",
+    "deploy-staging": "npm run update-all && npm run build-functions && npm run build -- -c staging && firebase deploy -P staging",
+    "deploy-prod": "npm run update-all && npm run build-functions && npm run build -- -c prod && firebase deploy -P prod"
   },
   "private": true,
   "dependencies": {
