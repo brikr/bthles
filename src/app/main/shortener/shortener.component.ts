@@ -2,7 +2,7 @@ import {animate, style, transition, trigger} from '@angular/animations';
 import {Component, OnDestroy} from '@angular/core';
 import {AngularFirestore} from '@angular/fire/firestore';
 import {AngularFireFunctions} from '@angular/fire/functions';
-import {MatSnackBar} from '@angular/material';
+import {MatSnackBar} from '@angular/material/snack-bar';
 import {Event, NavigationStart, Router} from '@angular/router';
 import {environment} from '@bthles-environment/environment';
 import {Meta} from '@bthles-types/types';

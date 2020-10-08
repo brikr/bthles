@@ -1,5 +1,5 @@
 import {ErrorHandler, Inject, InjectionToken} from '@angular/core';
-import {MatSnackBar} from '@angular/material';
+import {MatSnackBar} from '@angular/material/snack-bar';
 import {environment} from '@bthles-environment/environment';
 import * as Rollbar from 'rollbar';
 
