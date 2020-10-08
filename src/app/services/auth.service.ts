@@ -14,14 +14,14 @@ export class AuthService {
     switch (type) {
       default:
       case 'ANON':
-        return this.afAuth.auth.signInAnonymously();
+        return this.afAuth.signInAnonymously();
       case 'GOOGLE':
-        return this.afAuth.auth.signInWithPopup(new auth.GoogleAuthProvider());
+        return this.afAuth.signInWithPopup(new auth.GoogleAuthProvider());
     }
   }
 
-  getUid(): string {
-    const user = this.afAuth.auth.currentUser;
+  async getUid(): Promise<string> {
+    const user = await this.afAuth.currentUser;
     if (user === null) {
       return '';
     }

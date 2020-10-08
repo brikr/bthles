@@ -2,7 +2,7 @@ import {animate, style, transition, trigger} from '@angular/animations';
 import {Component, OnDestroy} from '@angular/core';
 import {AngularFirestore} from '@angular/fire/firestore';
 import {AngularFireFunctions} from '@angular/fire/functions';
-import {MatSnackBar} from '@angular/material';
+import {MatSnackBar} from '@angular/material/snack-bar';
 import {Event, NavigationStart, Router} from '@angular/router';
 import {environment} from '@bthles-environment/environment';
 import {Meta} from '@bthles-types/types';
@@ -110,7 +110,7 @@ export class ShortenerComponent implements OnDestroy {
         await this.db.collection('links').doc(meta.nextUrl).set({
           content: this.content,
           type: 'link',
-          owner: this.authService.getUid(),
+          owner: await this.authService.getUid(),
         });
         success.next();
         this.state = ShortenerState.LINK_RECEIVED;

@@ -22,11 +22,11 @@ export class NavComponent {
   }
 
   async login() {
-    const fromUser = this.authService.getUid();
+    const fromUser = await this.authService.getUid();
     await this.authService.login('GOOGLE');
     const data = {
       fromUser,
-      toUser: this.authService.getUid(),
+      toUser: await this.authService.getUid(),
     };
     const remoteClaimLinks =
         this.fns.httpsCallable<LinkClaimData, void>('callableClaimLinks');

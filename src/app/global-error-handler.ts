@@ -1,5 +1,5 @@
-import {ErrorHandler, Inject, InjectionToken} from '@angular/core';
-import {MatSnackBar} from '@angular/material';
+import {ErrorHandler, Inject, Injectable, InjectionToken} from '@angular/core';
+import {MatSnackBar} from '@angular/material/snack-bar';
 import {environment} from '@bthles-environment/environment';
 import * as Rollbar from 'rollbar';
 
@@ -21,10 +21,11 @@ export function rollbarFactory(): Rollbar {
   return new Rollbar(rollbarConfig);
 }
 
+@Injectable({providedIn: 'root'})
 export class GlobalErrorHandler implements ErrorHandler {
   constructor(
       @Inject(RollbarService) private readonly rollbar: Rollbar,
-      @Inject(MatSnackBar) private readonly snackBar: MatSnackBar,
+      private readonly snackBar: MatSnackBar,
   ) {}
 
   handleError(error: Exception) {
