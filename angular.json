@@ -53,8 +53,7 @@
                 "src/app"
               ]
             },
-            "scripts": [],
-            "es5BrowserSupport": true
+            "scripts": []
           },
           "configurations": {
             "prod": {
@@ -165,5 +164,8 @@
       }
     }
   },
-  "defaultProject": "bthles"
+  "defaultProject": "bthles",
+  "cli": {
+    "analytics": "4db65d8e-ee77-4d93-9cba-193a3def1814"
+  }
 }
