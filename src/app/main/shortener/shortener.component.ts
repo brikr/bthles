@@ -110,7 +110,7 @@ export class ShortenerComponent implements OnDestroy {
         await this.db.collection('links').doc(meta.nextUrl).set({
           content: this.content,
           type: 'link',
-          owner: this.authService.getUid(),
+          owner: await this.authService.getUid(),
         });
         success.next();
         this.state = ShortenerState.LINK_RECEIVED;
