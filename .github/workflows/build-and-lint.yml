@@ -8,6 +8,7 @@ on:
 jobs:
   build-and-lint:
     name: Build and lint
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
       - uses: actions/setup-node@master
