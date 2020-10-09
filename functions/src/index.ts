@@ -14,42 +14,36 @@ const db = admin.firestore();
 // these base62 fields starts 1, but it's never directly used (only
 // incremented). What matters is that the URLs will make use of all combinations
 // of [0-9A-Za-z]+
-const b62 =
-    [
-      // tslint:disable-next-line:ban
-      ...[...Array(10)].map(
-          (_, i) => String.fromCharCode('0'.charCodeAt(0) + i)),
-      // tslint:disable-next-line:ban
-      ...[...Array(26)].map(
-          (_, i) => String.fromCharCode('A'.charCodeAt(0) + i)),
-      // tslint:disable-next-line:ban
-      ...[...Array(26)].map(
-          (_, i) => String.fromCharCode('a'.charCodeAt(0) + i)),
-    ]
+const b62 = [
+  // tslint:disable-next-line:ban
+  ...[...Array(10)].map((_, i) => String.fromCharCode('0'.charCodeAt(0) + i)),
+  // tslint:disable-next-line:ban
+  ...[...Array(26)].map((_, i) => String.fromCharCode('A'.charCodeAt(0) + i)),
+  // tslint:disable-next-line:ban
+  ...[...Array(26)].map((_, i) => String.fromCharCode('a'.charCodeAt(0) + i)),
+];
 
-    // Converts a number to a base62 string
-    function base62Encode(num: number):
-        string {
-          let result = '';
-          let value = num - 1;
-          while (value >= 0) {
-            result = b62[value % 62] + result;
-            value = Math.floor((value - 62) / 62);
-          }
-          return result;
-        }
+// Converts a number to a base62 string
+function base62Encode(num: number): string {
+  let result = '';
+  let value = num - 1;
+  while (value >= 0) {
+    result = b62[value % 62] + result;
+    value = Math.floor((value - 62) / 62);
+  }
+  return result;
+}
 
 // Converts a base62 string to a number
-function base62Decode(str: string):
-    number {
-      let power = 1;
-      let result = 0;
-      for (const char of str.split('').reverse()) {
-        result += (b62.findIndex(x => x === char) + 1) * power;
-        power *= 62;
-      }
-      return result;
-    }
+function base62Decode(str: string): number {
+  let power = 1;
+  let result = 0;
+  for (const char of str.split('').reverse()) {
+    result += (b62.findIndex(x => x === char) + 1) * power;
+    power *= 62;
+  }
+  return result;
+}
 
 // Find the next available slot for the next link that someone decides to
 // create. The reason we can't just increment a counter is because we want to
@@ -58,8 +52,7 @@ function base62Decode(str: string):
 // until we find a free space. Chances are this will just increment once in
 // nearly all cases.
 // This function is idempotent.
-async function
-updateNextUrl() {
+async function updateNextUrl() {
   // Get value of nextUrl
   const meta = (await db.doc('meta/meta').get()).data()! as Meta | undefined;
 
