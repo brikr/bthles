@@ -48,5 +48,3 @@ Thumbs.db
 # Angular Firebase
 .firebase/
 .firebaserc
-src/environments/*
-!src/environments/environment.sample.ts
