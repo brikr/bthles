@@ -14,7 +14,7 @@
     "build-functions": "cd functions && npm run build && cd -",
     "deploy": "npm run deploy-staging",
     "deploy-staging": "npm run update-all && npm run build-functions && npm run build -- -c staging && firebase deploy -P staging",
-    "deploy-prod": "npm run update-all && npm run build-functions && npm run build -- -c prod && firebase deploy -P prod"
+    "deploy-prod": "npm run update-all && npm run build-functions && npm run build -- --prod && firebase deploy -P production"
   },
   "private": true,
   "dependencies": {
