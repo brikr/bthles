@@ -1,7 +1,7 @@
 import {ErrorHandler, NgModule} from '@angular/core';
 import {AngularFireModule} from '@angular/fire';
 import {AngularFireAuthModule} from '@angular/fire/auth';
-import {AngularFirestoreModule} from '@angular/fire/firestore';
+import {AngularFirestoreModule, SETTINGS} from '@angular/fire/firestore';
 import {AngularFireFunctionsModule} from '@angular/fire/functions';
 import {FormsModule} from '@angular/forms';
 import {BrowserModule} from '@angular/platform-browser';
@@ -47,7 +47,11 @@ import {ClipboardModule} from 'ngx-clipboard';
   ],
   providers: [
     {provide: ErrorHandler, useClass: GlobalErrorHandler},
-    {provide: RollbarService, useFactory: rollbarFactory},
+    {provide: RollbarService, useFactory: rollbarFactory}, {
+      provide: SETTINGS,
+      useFactory: () =>
+          environment?.useEmulator ? {host: 'localhost:8080', ssl: false} : {}
+    }
   ],
   bootstrap: [
     AppComponent,

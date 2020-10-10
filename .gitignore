@@ -48,3 +48,6 @@ Thumbs.db
 # Angular Firebase
 .firebase/
 .firebaserc
+
+# Firestore emulator logs
+*-debug.log
