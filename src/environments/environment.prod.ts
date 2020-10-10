@@ -8,5 +8,6 @@ export const environment = {
     storageBucket: 'bthles.appspot.com',
     messagingSenderId: '312510828218'
   },
+  useEmulator: false,
   baseUrl: 'https://bthl.es',
 };

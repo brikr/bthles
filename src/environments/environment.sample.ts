@@ -17,5 +17,6 @@ export const environment = {
     storageBucket: '<BUCKET>.appspot.com',
     messagingSenderId: '<SENDER_ID>',
   },
+  useEmulator: false,
   baseUrl: 'http://localhost:4200',
 };

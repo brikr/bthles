@@ -10,5 +10,6 @@ export const environment = {
     storageBucket: 'bthles-dev.appspot.com',
     messagingSenderId: '4574988607'
   },
+  useEmulator: false,
   baseUrl: 'https://bthles-dev.firebaseapp.com',
 };
