@@ -1,13 +1,13 @@
-name: Deploy to production
+name: Build and lint
 
 on:
-  push:
+  pull_request:
     branches:
       - master
 
 jobs:
-  deploy-prod:
-    name: Deploy to production
+  build-and-lint:
+    name: Build and lint
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
@@ -19,8 +19,3 @@ jobs:
       - run: npm run build:prod
       - run: npm run lint
       - run: npm run lint-functions
-      - uses: w9jds/firebase-action@master
-        with:
-          args: deploy -P bthles
-        env:
-          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
