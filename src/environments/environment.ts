@@ -12,6 +12,7 @@ export const environment = {
     storageBucket: 'bthles-dev.appspot.com',
     messagingSenderId: '4574988607'
   },
+  useEmulator: true,
   baseUrl: 'http://localhost:4200',
 };
 

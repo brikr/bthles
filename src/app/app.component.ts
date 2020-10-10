@@ -1,5 +1,7 @@
 import {Component} from '@angular/core';
+import {AngularFireFunctions} from '@angular/fire/functions';
 import {NavigationEnd, Router} from '@angular/router';
+import {environment} from '@bthles-environment/environment';
 import {AuthService} from '@bthles/services/auth.service';
 import {User} from 'firebase';
 import {take} from 'rxjs/operators';
@@ -15,6 +17,7 @@ declare let ga: Function;
 export class AppComponent {
   constructor(
       authService: AuthService,
+      fns: AngularFireFunctions,
       router: Router,
   ) {
     router.events.subscribe(event => {
@@ -30,5 +33,10 @@ export class AppComponent {
         authService.login();
       }
     });
+
+    // Use functions emulator if environment calls for it
+    if (environment.useEmulator) {
+      fns.useFunctionsEmulator('http://localhost:5001');
+    }
   }
 }
