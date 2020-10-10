@@ -9,8 +9,9 @@ import {Meta} from '@bthles-types/types';
 import {AuthService} from '@bthles/services/auth.service';
 import {GoogleAnalyticsService} from '@bthles/services/google-analytics.service';
 import {User} from 'firebase';
+import {FirebaseError} from 'firebase';
 import {interval, ReplaySubject} from 'rxjs';
-import {takeUntil} from 'rxjs/operators';
+import {first, takeUntil} from 'rxjs/operators';
 
 @Component({
   selector: 'bthles-shortener',
@@ -45,15 +46,13 @@ import {takeUntil} from 'rxjs/operators';
         ]),
   ],
 })
-export class ShortenerComponent implements OnDestroy {
+export class ShortenerComponent {
   content = '';
   state = ShortenerState.START;
   shortUrl = '';
 
   // give template access to some items
   ShortenerState = ShortenerState;
-
-  private readonly destroyed = new ReplaySubject<void>();
 
   constructor(
       private readonly db: AngularFirestore,
@@ -99,48 +98,56 @@ export class ShortenerComponent implements OnDestroy {
     // the link. This only occurs when multiple people create links in quick
     // succession, and the Firestore function is only slow if nobody is creating
     // links, so it's rare we have to retry here.
-    const success = new ReplaySubject<never>();
-    interval(1000).pipe(takeUntil(success)).subscribe(async () => {
+    let success = false;
+    do {
       try {
         // Query db meta (notably nextUrl)
-        const meta =
-            (await this.db.doc<Meta>('meta/meta').ref.get()).data() as Meta;
+        let meta =
+            (await this.db.doc<Meta>('meta/meta').ref.get()).data() as Meta |
+            undefined;
+
+        // If meta is undefined (fresh database), use '0' for nextUrl
+        // TODO: once we ditch clang-format, we can use ||= here
+        if (meta === undefined) {
+          meta = {nextUrl: '0'};
+        }
 
         // Create short link document
-        await this.db.collection('links').doc(meta.nextUrl).set({
+        await this.db.collection('links').doc(meta?.nextUrl || '0').set({
           content: this.content,
           type: 'link',
           owner: await this.authService.getUid(),
         });
-        success.next();
+        success = true;
+
         this.state = ShortenerState.LINK_RECEIVED;
         this.shortUrl = `${environment.baseUrl}/${meta.nextUrl}`;
 
         // Show login tip if user isn't logged in
-        this.authService.getUnanonymousUser()
-            .pipe(takeUntil(this.destroyed))
-            .subscribe((u: User|null) => {
+        this.authService.getUnanonymousUser().pipe(first()).subscribe(
+            (u: User|null) => {
               if (u === null) {
                 this.snackbar.open(
                     'Tip: You can sign in to take ownership of the links you create, which allows you to view their hit count and delete them.',
                     'OK');
               }
             });
-      } catch {
-        // We get an error if we didn't have permissions to create the record,
-        // likely meaning it already exists. In this case, we request that the
-        // server increment the nextUrl (it is likely already doing this due to
-        // an onCreate hook, but in case it's slow or anything, we run it here
-        // too. It's idempotent). Request server to increment
-        const incrementNextUrl =
-            this.fns.httpsCallable<void, void>('callableIncrementNextUrl');
-        await incrementNextUrl().toPromise();
+        success = true;
+      } catch (e) {
+        if (e?.code === 'permission-denied') {
+          success = false;
+          // We get an error if we didn't have permissions to create the record,
+          // likely meaning it already exists. In this case, we request that the
+          // server increment the nextUrl (it is likely already doing this due
+          // to an onCreate hook, but in case it's slow or anything, we run it
+          // here too. It's idempotent). Request server to increment
+          const incrementNextUrl =
+              this.fns.httpsCallable<void, void>('callableIncrementNextUrl');
+          await incrementNextUrl().toPromise();
+          await new Promise(resolve => setTimeout(resolve, 1000));
+        }
       }
-    });
-  }
-
-  ngOnDestroy() {
-    this.destroyed.next();
+    } while (!success);
   }
 }
 

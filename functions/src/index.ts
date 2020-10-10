@@ -54,15 +54,16 @@ function base62Decode(str: string): number {
 // This function is idempotent.
 async function updateNextUrl() {
   // Get value of nextUrl
-  const meta = (await db.doc('meta/meta').get()).data()! as Meta | undefined;
+  let meta = (await db.doc('meta/meta').get()).data() as Meta | undefined;
 
+  // Fresh database. Start nextUrl at '0'
   if (meta === undefined) {
-    // Fresh database. Set nextUrl to '0'
-    await db.doc('meta/meta').set({nextUrl: '0'});
-    return;
+    meta = {nextUrl: '0'};
+    // Not stopping here, because the first link might have just been created at
+    // '0', so we still need to see if it should be incremented.
   }
 
-  let nextUrl = meta.nextUrl;
+  let {nextUrl} = meta;
 
   // Check if nextUrl is taken
   let exists = (await db.collection('links').doc(nextUrl).get()).exists;
@@ -73,7 +74,7 @@ async function updateNextUrl() {
   }
 
   // Update db with new nextUrl
-  await db.doc('meta/meta').update({nextUrl});
+  await db.doc('meta/meta').set({nextUrl}, {merge: true});
 }
 
 export const onLinkCreateIncrementNextUrl =

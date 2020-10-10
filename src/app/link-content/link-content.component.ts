@@ -27,7 +27,7 @@ export class LinkContentComponent {
       if (dest !== undefined && dest.content !== undefined) {
         const incrementHitCount =
             fns.httpsCallable<string, void>('callableIncrementHitCount');
-        incrementHitCount(short);
+        await incrementHitCount(short).toPromise();
         window.location.replace(dest.content);
       } else {
         window.location.replace(environment.baseUrl);
